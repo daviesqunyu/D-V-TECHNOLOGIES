@@ -1,10 +1,13 @@
 {
   "name": "d-v",
   "version": "1.0.0",
-  "description": "��#\u0000 \u0000D\u0000-\u0000V\u0000\r\u0000 \u0000",
+  "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "echo 'No build step needed'",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d public"
   },
   "repository": {
     "type": "git",
@@ -17,14 +20,11 @@
   "bugs": {
     "url": "https://github.com/daviesqunyu/D-V/issues"
   },
-  "homepage": "https://github.com/daviesqunyu/D-V#readme",
+  "homepage": "https://daviesqunyu.github.io/D-V",
   "dependencies": {
     "express": "^5.1.0"
   },
   "devDependencies": {
     "gh-pages": "^6.3.0"
   }
-}
-"scripts": {
-  "deploy": "gh-pages -d build"
 }
