@@ -20,6 +20,9 @@
   "homepage": "https://github.com/daviesqunyu/D-V#readme",
   "dependencies": {
     "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "gh-pages": "^6.3.0"
   }
 }
 "scripts": {
