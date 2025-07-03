@@ -1,10 +1,12 @@
 {
   "name": "d-v",
   "version": "1.0.0",
-  "description": "��#\u0000 \u0000D\u0000-\u0000V\u0000\r\u0000 \u0000",
+  "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "server": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "deploy": "gh-pages -d build"
   },
   "repository": {
     "type": "git",
@@ -24,7 +26,4 @@
   "devDependencies": {
     "gh-pages": "^6.3.0"
   }
-}
-"scripts": {
-  "deploy": "gh-pages -d build"
 }
