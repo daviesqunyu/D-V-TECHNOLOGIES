@@ -1,0 +1,15 @@
+{
+  "short_name": "D&V Technologies",
+  "name": "D&V Technologies - Kenya's Tech, AI & IoT Innovators",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#00d4ff",
+  "background_color": "#0a1428"
+}

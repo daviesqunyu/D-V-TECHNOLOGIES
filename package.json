@@ -1,36 +1,50 @@
 {
-  "name": "d-v",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "dv-technologies-react",
+  "version": "2.0.0",
+  "description": "D&V Technologies - Modern React Website",
+  "main": "src/index.js",
   "scripts": {
-<<<<<<< HEAD
-    "server": "node server.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "deploy": "gh-pages -d build"
-=======
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "echo 'No build step needed'",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d public"
->>>>>>> 411ef91acf404e624159dc2d0dd25220c05cd176
+    "deploy": "gh-pages -d build"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/daviesqunyu/D-V.git"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": ["react", "website", "business", "ai", "iot", "kenya"],
+  "author": "D&V Technologies",
   "license": "ISC",
-  "type": "commonjs",
   "bugs": {
     "url": "https://github.com/daviesqunyu/D-V/issues"
   },
   "homepage": "https://daviesqunyu.github.io/D-V",
   "dependencies": {
-    "express": "^5.1.0"
+    "express": "^4.17.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-scripts": "5.0.1",
+    "styled-components": "^6.1.8",
+    "framer-motion": "^10.18.0",
+    "react-intersection-observer": "^9.5.3",
+    "react-responsive": "^10.0.0"
   },
   "devDependencies": {
     "gh-pages": "^6.3.0"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }

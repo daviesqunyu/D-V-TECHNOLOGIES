@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>D&V Technologies - Kenya's AI & IoT Innovators | Silicon Savannah 2030</title>
+    <title>D&V Technologies - Kenya's Tech, AI & IoT Innovators | Silicon Savannah 2030</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="carousel.css">
-    <link rel="stylesheet" href="features.css">
+    <link rel="stylesheet" href="styles.css">
+
     <style>
         /* Global Styles */
         :root {
@@ -127,6 +127,9 @@
             .nav-container { padding: 0 0.5rem; }
         }
         @media (max-width: 768px) {
+            .nav-container {
+                padding: 0 1rem;
+            }
             .nav-menu {
                 flex-direction: column;
                 position: absolute;
@@ -134,6 +137,8 @@
                 width: 100%;
                 background: var(--dark);
                 display: none;
+                z-index: 1000;
+                box-shadow: 0 8px 32px rgba(0,212,255,0.13);
             }
             .nav-menu.active { display: flex; }
             .dropdown-panel {
@@ -142,6 +147,7 @@
                 box-shadow: none;
                 background: #f8fafc;
                 margin-bottom: 1rem;
+                border-radius: 8px;
             }
             .mobile-menu { display: block; }
         }
@@ -459,8 +465,58 @@
         .social-links a:hover { color: #ff6b6b; }
         @media (max-width: 768px) {
             .hero h1 { font-size: 2rem; }
-            .cta-buttons { flex-direction: column; align-items: center; }
+            .hero-subtitle { font-size: 1.1rem; }
+            .hero-description { font-size: 1rem; }
+            .cta-buttons { flex-direction: column; align-items: center; gap: 0.8rem; }
             .section-title { font-size: 1.3rem; }
+            .navbar { padding: 0.5rem 0; }
+            .nav-container { padding: 0 0.5rem; }
+            .logo { font-size: 1.5rem; }
+        }
+        @media (max-width: 480px) {
+            .hero h1 { font-size: 1.8rem; }
+            .hero-subtitle { font-size: 1rem; }
+            .hero-description { font-size: 0.95rem; }
+            .btn { padding: 0.8rem 1.5rem; font-size: 0.9rem; }
+            .logo { font-size: 1.3rem; }
+            .hero-content { padding: 1rem 0.5rem; }
+        }
+        /* Additional responsive fixes */
+        @media (max-width: 900px) {
+            .dropdown-panel {
+                min-width: 250px;
+                left: -50px;
+            }
+        }
+        @media (max-width: 600px) {
+            .hero-content > div:first-child {
+                flex-wrap: wrap;
+                gap: 0.8rem !important;
+            }
+            .hero-content > div:first-child > span {
+                padding: 0.8rem !important;
+            }
+            .hero-content > div:nth-child(5) {
+                grid-template-columns: 1fr 1fr !important;
+                gap: 1rem !important;
+            }
+            .dropdown-panel {
+                position: static !important;
+                box-shadow: none !important;
+                background: rgba(248, 250, 252, 0.95) !important;
+            }
+            .wallet-section {
+                padding: 1.5rem !important;
+            }
+            .wallet-buttons {
+                flex-direction: column !important;
+                align-items: center !important;
+            }
+            #connectWalletBtn {
+                width: 100% !important;
+                max-width: 280px !important;
+                justify-content: center !important;
+            }
         }
         /* Carousel Styles */
         .carousel-container {
@@ -549,6 +605,9 @@
             <i class="fas fa-bars"></i>
         </button>
         <div class="slider-panel" id="mainSliderPanel">
+            <div class="slider-close-btn" id="sliderCloseBtn">
+                <i class="fas fa-times"></i>
+            </div>
             <div class="slider-pages">
                 <!-- Home/About Slide -->
                 <div class="slider-page active" data-page="home">
@@ -556,8 +615,8 @@
                         <i class="fas fa-home slider-icon"></i>
                         <span>About D&V Technologies</span>
                     </div>
-                    <p>
-                        <strong>D&V Technologies</strong> is a Kenyan tech company based in Lower Kabete, Nairobi. We solve current technological problem deliver AI, IoT, and digital transformation for businesses across Kenya and East Africa.
+                    <p style="color: #64748b; font-size: 1.05rem; line-height: 1.6; margin-bottom: 1rem;">
+                        <strong style="color: #0a1428;">D&V Technologies</strong> is a leading Kenyan tech company based in Lower Kabete, Nairobi. We solve current technological problems and deliver cutting-edge AI, IoT, and digital transformation solutions for businesses across Kenya and East Africa.
                     </p>
                     <ul class="slider-list">
                         <li><i class="fas fa-lightbulb"></i> Innovation</li>
@@ -664,45 +723,121 @@
     <style>
         /* drawer css */
 
-        .top-left-slider {
+    .top-left-slider {
         position: fixed;
-        top: 1px;
-        left: 1px;
+        top: 15px;
+        left: 15px;
         z-index: 2001;
     }
     .top-left-slider button {
-        background: #0a1428;
+        background: linear-gradient(135deg, #0a1428 0%, #1e293b 100%);
         color: #00d4ff;
-        border: none;
+        border: 2px solid rgba(0, 212, 255, 0.3);
         border-radius: 50%;
-        width: 48px;
-        height: 48px;
-        font-size: 1.6rem;
-        box-shadow: 0 2px 12px rgba(0,212,255,0.10);
+        width: 56px;
+        height: 56px;
+        font-size: 1.8rem;
+        box-shadow: 0 4px 20px rgba(0, 212, 255, 0.2),
+                    0 0 0 0 rgba(0, 212, 255, 0.4);
         cursor: pointer;
-        transition: background 0.2s;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+    .top-left-slider button:before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        background: radial-gradient(circle, rgba(0, 212, 255, 0.3) 0%, transparent 70%);
+        transform: translate(-50%, -50%);
+        border-radius: 50%;
+        transition: width 0.6s ease, height 0.6s ease;
     }
     .top-left-slider button:hover {
-        background: #00d4ff;
+        background: linear-gradient(135deg, #00d4ff 0%, #0066ff 100%);
         color: #fff;
+        border-color: #00d4ff;
+        box-shadow: 0 8px 32px rgba(0, 212, 255, 0.4),
+                    0 0 0 8px rgba(0, 212, 255, 0.1);
+        transform: scale(1.05);
+    }
+    .top-left-slider button:hover:before {
+        width: 100px;
+        height: 100px;
+    }
+    .top-left-slider button:active {
+        transform: scale(0.95);
+    }
+    .top-left-slider button i {
+        position: relative;
+        z-index: 1;
+        transition: transform 0.3s ease;
+    }
+    .top-left-slider button:hover i {
+        transform: rotate(180deg);
     }
     .slider-panel {
         display: none;
         position: absolute;
-        top: 56px;
+        top: 70px;
         left: 0;
-        min-width: 270px;
-        max-width: 95vw;
-        background: #fff;
-        border-radius: 16px;
-        box-shadow: 0 8px 32px rgba(0,212,255,0.13);
-        padding: 1.2rem 1.1rem 0.7rem 1.1rem;
-        animation: dropdownFade 0.4s;
-        overflow: hidden;
+        width: 280px;
+        max-height: 400px;
+        background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+        border-radius: 12px;
+        box-shadow: 0 8px 25px rgba(0, 212, 255, 0.12),
+                    0 2px 8px rgba(0, 0, 0, 0.08);
+        padding: 1rem;
+        animation: slideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        overflow-y: auto;
+        border: 1px solid rgba(0, 212, 255, 0.1);
+        position: relative;
+    }
+    .slider-close-btn {
+        position: absolute;
+        top: 0.5rem;
+        right: 0.5rem;
+        width: 24px;
+        height: 24px;
+        background: rgba(255, 107, 107, 0.1);
+        border: 1px solid rgba(255, 107, 107, 0.3);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        z-index: 10;
+    }
+    .slider-close-btn:hover {
+        background: #ff6b6b;
+        border-color: #ff6b6b;
+        transform: scale(1.1);
+    }
+    .slider-close-btn i {
+        color: #ff6b6b;
+        font-size: 0.7rem;
+        transition: color 0.3s ease;
+    }
+    .slider-close-btn:hover i {
+        color: #fff;
+    }
+    @keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateY(-20px) scale(0.95);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
     }
     .slider-pages {
         position: relative;
-        min-height: 210px;
+        min-height: 150px;
     }
     .slider-page {
         display: none;
@@ -715,15 +850,41 @@
     .slider-header {
         display: flex;
         align-items: center;
-        gap: 0.7rem;
-        font-size: 1.18rem;
-        font-weight: 700;
-        margin-bottom: 0.7rem;
+        gap: 0.6rem;
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-bottom: 0.8rem;
         color: #0a1428;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid rgba(0, 212, 255, 0.1);
+        position: relative;
+    }
+    .slider-header::after {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        width: 40px;
+        height: 2px;
+        background: linear-gradient(90deg, #00d4ff, #0066ff);
+        border-radius: 1px;
     }
     .slider-icon {
-        font-size: 1.5rem;
+        font-size: 1.2rem;
         color: #00d4ff;
+        background: rgba(0, 212, 255, 0.1);
+        padding: 0.4rem;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        transition: all 0.3s ease;
+    }
+    .slider-header:hover .slider-icon {
+        background: rgba(0, 212, 255, 0.2);
+        transform: scale(1.1);
     }
     .slider-list, .slider-features, .slider-contact {
         list-style: none;
@@ -733,71 +894,179 @@
     .slider-list li, .slider-features li, .slider-contact li {
         display: flex;
         align-items: center;
-        gap: 0.7rem;
-        font-size: 1.05rem;
+        gap: 0.6rem;
+        font-size: 0.95rem;
         margin-bottom: 0.3rem;
         color: #64748b;
+        padding: 0.4rem;
+        border-radius: 6px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+    }
+    .slider-list li:hover, .slider-features li:hover, .slider-contact li:hover {
+        background: rgba(0, 212, 255, 0.05);
+        color: #0a1428;
+        transform: translateX(5px);
+    }
+    .slider-list li::before, .slider-features li::before, .slider-contact li::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 0;
+        height: 100%;
+        background: linear-gradient(90deg, rgba(0, 212, 255, 0.1), transparent);
+        transition: width 0.3s ease;
+    }
+    .slider-list li:hover::before, .slider-features li:hover::before, .slider-contact li:hover::before {
+        width: 100%;
     }
     .slider-list i, .slider-features i, .slider-contact i {
         color: #00d4ff;
         min-width: 1.2em;
         text-align: center;
+        background: rgba(0, 212, 255, 0.1);
+        padding: 0.2rem;
+        border-radius: 50%;
+        transition: all 0.3s ease;
+        z-index: 1;
+        position: relative;
+        font-size: 0.9rem;
+    }
+    .slider-list li:hover i, .slider-features li:hover i, .slider-contact li:hover i {
+        background: rgba(0, 212, 255, 0.2);
+        transform: scale(1.1);
     }
     .slider-link {
         display: inline-flex;
         align-items: center;
-        gap: 0.5rem;
+        gap: 0.4rem;
         background: linear-gradient(45deg, #00d4ff, #0066ff);
         color: #fff;
-        border-radius: 50px;
-        padding: 0.6rem 1.3rem;
-        font-size: 1rem;
+        border-radius: 15px;
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
         font-weight: 600;
         text-decoration: none;
-        margin-top: 0.7rem;
-        transition: background 0.2s;
+        margin-top: 0.8rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 3px 12px rgba(0, 212, 255, 0.3);
+        position: relative;
+        overflow: hidden;
     }
     .slider-link:hover {
         background: linear-gradient(45deg, #0066ff, #00d4ff);
         color: #fff;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0, 212, 255, 0.4);
+    }
+    .slider-link::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: left 0.5s ease;
+    }
+    .slider-link:hover::before {
+        left: 100%;
     }
     .slider-next, .slider-prev {
-        background: #f1f5f9;
+        background: rgba(0, 212, 255, 0.1);
         color: #00d4ff;
-        border: none;
-        border-radius: 30px;
-        padding: 0.4rem 1.1rem;
-        font-size: 1rem;
+        border: 1px solid rgba(0, 212, 255, 0.3);
+        border-radius: 12px;
+        padding: 0.3rem 0.8rem;
+        font-size: 0.8rem;
         font-weight: 500;
         margin: 0.3rem 0.3rem 0 0;
         cursor: pointer;
-        transition: background 0.2s;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
     }
     .slider-next:hover, .slider-prev:hover {
         background: #00d4ff;
         color: #fff;
+        border-color: #00d4ff;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(0, 212, 255, 0.3);
     }
     .slider-nav-dots {
         display: flex;
         justify-content: center;
-        gap: 0.5rem;
-        margin-top: 0.7rem;
+        gap: 0.4rem;
+        margin-top: 0.6rem;
+        padding-top: 0.6rem;
+        border-top: 1px solid rgba(0, 212, 255, 0.1);
     }
     .slider-dot {
-        width: 12px; height: 12px;
+        width: 10px; 
+        height: 10px;
         border-radius: 50%;
-        background: #cbd5e1;
-        border: 2px solid #00d4ff;
+        background: rgba(203, 213, 225, 0.5);
+        border: 1px solid rgba(0, 212, 255, 0.3);
         cursor: pointer;
-        transition: background 0.2s;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+    .slider-dot::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        background: #00d4ff;
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        transition: all 0.3s ease;
+    }
+    .slider-dot:hover {
+        border-color: #00d4ff;
+        transform: scale(1.2);
     }
     .slider-dot.active {
         background: #00d4ff;
+        border-color: #00d4ff;
+        box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.2);
+    }
+    .slider-dot.active::before {
+        width: 4px;
+        height: 4px;
+        background: #fff;
     }
     @media (max-width: 600px) {
-        .top-left-slider { top: 10px; left: 10px; }
-        .slider-panel { min-width: 170px; padding: 0.7rem 0.5rem 0.5rem 0.5rem; }
+        .top-left-slider { top: 70px; left: 10px; }
+        .slider-panel { 
+            width: 260px;
+            max-width: 85vw;
+            padding: 0.8rem; 
+        }
         .slider-header { font-size: 1rem; }
+        .slider-list li, .slider-features li, .slider-contact li {
+            font-size: 0.9rem;
+            padding: 0.3rem;
+        }
+    }
+    @media (max-width: 480px) {
+        .top-left-slider { top: 65px; left: 5px; }
+        .slider-panel { 
+            width: 240px;
+            max-width: 90vw;
+            padding: 0.7rem;
+        }
+        .slider-header { font-size: 0.9rem; }
+        .slider-list li, .slider-features li, .slider-contact li {
+            font-size: 0.85rem;
+            padding: 0.25rem;
+        }
     }
     </style>
     <script>
@@ -820,6 +1089,12 @@
         e.stopPropagation();
         sliderPanel.style.display = sliderPanel.style.display === 'block' ? 'none' : 'block';
         showSliderPage(currentPage);
+    };
+    
+    // Close button functionality
+    document.getElementById('sliderCloseBtn').onclick = function(e) {
+        e.stopPropagation();
+        sliderPanel.style.display = 'none';
     };
     sliderPanel.addEventListener('click', function(e) { e.stopPropagation(); });
     document.addEventListener('click', function(e) {
@@ -898,7 +1173,7 @@
                     <a href="#contact" class="nav-link"><i class="fas fa-envelope"></i> Contact</a>
                 </li>
             </ul>
-            <div class="mobile-menu">
+            <div class="mobile-menu" id="mobileMenuToggle">
                 <i class="fas fa-bars"></i>
             </div>
         </div>
@@ -953,20 +1228,20 @@
             </div>
 
             <div style="margin-top:2.2rem; display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:1.2rem;">
-            <div style="background:blue; border-radius:12px; padding:1rem;">
+            <div style="background:rgba(0,123,255,0.8); border-radius:12px; padding:1rem; color:#fff; text-align:center;">
                 <i class="fas fa-cogs" style="color:#00d4ff; font-size:1.5rem;"></i>
-                <div style="font-weight:600; margin-top:0.5rem;">IT Support & Mainatainance</div>
+                <div style="font-weight:600; margin-top:0.5rem;">IT Support & Maintenance</div>
             </div>
-            <div style="background:blueviolet; border-radius:12px; padding:1rem;">
+            <div style="background:rgba(138,43,226,0.8); border-radius:12px; padding:1rem; color:#fff; text-align:center;">
                 <i class="fas fa-microchip" style="color:#ff6b6b; font-size:1.5rem;"></i>
-                <div style="font-weight:600; margin-top:0.5rem;">Hardware Repair and software solutions</div>
+                <div style="font-weight:600; margin-top:0.5rem;">Hardware Repair & Software Solutions</div>
             </div>
 
-            <div style="background:goldenrod; border-radius:12px; padding:1rem;">
+            <div style="background:rgba(218,165,32,0.8); border-radius:12px; padding:1rem; color:#fff; text-align:center;">
                 <i class="fas fa-network-wired" style="color:#059669; font-size:1.5rem;"></i>
                 <div style="font-weight:600; margin-top:0.5rem;">Networking & Internet Solutions</div>
             </div>
-            <div style="background:gold; border-radius:12px; padding:1rem;">
+            <div style="background:rgba(255,215,0,0.8); border-radius:12px; padding:1rem; color:#333; text-align:center;">
                 <i class="fas fa-lightbulb" style="color:#22c55e; font-size:1.5rem;"></i>
                 <div style="font-weight:600; margin-top:0.5rem;">Business Solutions</div>
             </div>
@@ -1364,6 +1639,35 @@
                 <p><a href="https://www.dvtechnologies.com" target="_blank" style="color:#00d4ff;text-decoration:underline;">www.dvtechnologies.com</a></p>
             </div>
         </div>
+        <!-- Crypto Wallet Connection -->
+        <div class="wallet-section" style="margin: 2rem 0; text-align: center; padding: 2rem; background: linear-gradient(135deg, #0f172a, #1e293b); border-radius: 18px; color: white;">
+            <h3 style="color: #00d4ff; margin-bottom: 1rem; font-size: 1.5rem;">
+                <i class="fab fa-ethereum" style="margin-right: 0.5rem;"></i>
+                Crypto Payments Accepted
+            </h3>
+            <p style="color: #cbd5e1; margin-bottom: 1.5rem; font-size: 1.1rem;">
+                Connect your wallet for secure crypto transactions
+            </p>
+        </div>
+            <!--SCRIPT for wallet connection-->
+            <div  style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                      <button class="connect-wallet" 
+                      style="background: linear-gradient(45deg, #f6851b, #e2761b); border: none; padding: 1rem 2rem; border-radius: 12px; font-weight: 600; display: flex; align-items: center; gap: 0.5rem; transition: all 0.3s ease; cursor: pointer;">
+                    Connect wallet</button>
+
+  <script src="./main.js"></script>
+
+
+                </button>
+                <div id="walletStatus" style="display: none; background: rgba(0, 212, 255, 0.1); padding: 1rem; border-radius: 12px; border: 1px solid #00d4ff;">
+                    <p style="margin: 0; font-size: 0.9rem; color: #00d4ff;">
+                        <i class="fas fa-check-circle" style="margin-right: 0.5rem;"></i>
+                        <span id="walletAddress">Wallet Connected</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+
         <div class="map-container" style="margin-top:2rem;">
             <iframe
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.857417825912!2d36.7472!3d-1.2205!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f1f5c2e5e2b2b%3A0x7e8e2e2e2e2e2e2e!2sWagituni%20Villa%20Estate%2C%20Lower%20Kabete!5e0!3m2!1sen!2ske!4v1710000000000!5m2!1sen!2ske"
@@ -1498,13 +1802,150 @@
 
         <!-- Scripts -->
         <script>
-            //  JS  for menu, nav, hero, dropdowns, carousel
+            // Mobile menu toggle functionality
+            document.getElementById('mobileMenuToggle').addEventListener('click', function() {
+                const navMenu = document.querySelector('.nav-menu');
+                navMenu.classList.toggle('active');
+                
+                // Change icon between bars and X
+                const icon = this.querySelector('i');
+                if (navMenu.classList.contains('active')) {
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-times');
+                } else {
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+            });
 
+            // Close mobile menu when clicking on a nav link
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', function() {
+                    const navMenu = document.querySelector('.nav-menu');
+                    const mobileToggle = document.getElementById('mobileMenuToggle');
+                    const icon = mobileToggle.querySelector('i');
+                    
+                    navMenu.classList.remove('active');
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                });
+            });
 
-             // Mobile menu toggle
-            document.querySelector('.mobile-menu').onclick = function() {
-                document.querySelector('.nav-menu').classList.toggle('active');
-            };
+            // MetaMask Wallet Connection Functionality
+            let userWalletAddress = null;
+            
+            // Check if MetaMask is installed
+            function isMetaMaskInstalled() {
+                return typeof window.ethereum !== 'undefined';
+            }
+            
+            // Connect to MetaMask wallet
+            async function connectWallet() {
+                if (!isMetaMaskInstalled()) {
+                    alert('MetaMask is not installed. Please install MetaMask to continue.');
+                    window.open('https://metamask.io/download/', '_blank');
+                    return;
+                }
+                
+                try {
+                    // Request account access
+                    const accounts = await window.ethereum.request({
+                        method: 'eth_requestAccounts'
+                    });
+                    
+                    if (accounts.length > 0) {
+                        userWalletAddress = accounts[0];
+                        updateWalletUI(userWalletAddress);
+                        
+                        // Listen for account changes
+                        window.ethereum.on('accountsChanged', handleAccountsChanged);
+                        window.ethereum.on('chainChanged', handleChainChanged);
+                        
+                        console.log('Wallet connected:', userWalletAddress);
+                    }
+                } catch (error) {
+                    console.error('Error connecting wallet:', error);
+                    alert('Failed to connect wallet. Please try again.');
+                }
+            }
+            
+            // Handle account changes
+            function handleAccountsChanged(accounts) {
+                if (accounts.length === 0) {
+                    // User disconnected their wallet
+                    userWalletAddress = null;
+                    resetWalletUI();
+                } else {
+                    // User switched accounts
+                    userWalletAddress = accounts[0];
+                    updateWalletUI(userWalletAddress);
+                }
+            }
+            
+            // Handle chain changes
+            function handleChainChanged(chainId) {
+                // Reload the page when chain changes
+                window.location.reload();
+            }
+            
+            // Update UI when wallet is connected
+            function updateWalletUI(address) {
+                const connectBtn = document.getElementById('connectWalletBtn');
+                const walletStatus = document.getElementById('walletStatus');
+                const walletAddress = document.getElementById('walletAddress');
+                
+                if (connectBtn && walletStatus && walletAddress) {
+                    connectBtn.style.display = 'none';
+                    walletStatus.style.display = 'block';
+                    walletAddress.textContent = `${address.slice(0, 6)}...${address.slice(-4)}`;
+                }
+            }
+            
+            // Reset UI when wallet is disconnected
+            function resetWalletUI() {
+                const connectBtn = document.getElementById('connectWalletBtn');
+                const walletStatus = document.getElementById('walletStatus');
+                
+                if (connectBtn && walletStatus) {
+                    connectBtn.style.display = 'flex';
+                    walletStatus.style.display = 'none';
+                }
+            }
+            
+            // Check if wallet is already connected on page load
+            async function checkWalletConnection() {
+                if (isMetaMaskInstalled()) {
+                    try {
+                        const accounts = await window.ethereum.request({
+                            method: 'eth_accounts'
+                        });
+                        
+                        if (accounts.length > 0) {
+                            userWalletAddress = accounts[0];
+                            updateWalletUI(userWalletAddress);
+                            
+                            // Listen for account changes
+                            window.ethereum.on('accountsChanged', handleAccountsChanged);
+                            window.ethereum.on('chainChanged', handleChainChanged);
+                        }
+                    } catch (error) {
+                        console.error('Error checking wallet connection:', error);
+                    }
+                }
+            }
+            
+            // Initialize wallet connection functionality
+            document.addEventListener('DOMContentLoaded', function() {
+                const connectBtn = document.getElementById('connectWalletBtn');
+                if (connectBtn) {
+                    connectBtn.addEventListener('click', connectWallet);
+                }
+                
+                // Check for existing wallet connection
+                checkWalletConnection();
+            });
+            
+            // Additional JavaScript functionality
             // Navbar active link highlight
             document.querySelectorAll('.nav-link').forEach(link => {
                 link.addEventListener('click', function() {

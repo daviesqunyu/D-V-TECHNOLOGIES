@@ -1,0 +1,166 @@
+/* /c:/D&V/styles.css */
+
+/* Accessibility: Focus outlines for keyboard navigation */
+a:focus, button:focus, .nav-link:focus, .dropdown-link:focus, .btn:focus, .slider-dot:focus, .feature-card:focus {
+    outline: 2px solid #00d4ff;
+    outline-offset: 2px;
+    z-index: 2;
+}
+
+/* Hide scrollbars for background slideshows and overlays (for aesthetics) */
+.live-features-bg-slideshow, .hero-slideshow {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE 10+ */
+}
+.live-features-bg-slideshow::-webkit-scrollbar,
+.hero-slideshow::-webkit-scrollbar {
+    display: none;
+}
+
+/* Smooth transitions for dropdown-content and overlays */
+.dropdown-content,
+.hero-overlay,
+.slider-panel,
+.live-features-bg-slideshow .live-bg-slide {
+    transition: opacity 0.5s, visibility 0.5s;
+}
+
+/* Prevent text selection on icons/buttons for better UX */
+.logo, .nav-link, .dropdown-link, .btn, .slider-dot, .slider-link, .feature-card, .feature-icon, .service-icon, .contact-icon, .footer-link, .social-link {
+    user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+
+/* Responsive font scaling for accessibility */
+html {
+    font-size: 16px;
+}
+@media (max-width: 600px) {
+    html {
+        font-size: 15px;
+    }
+}
+
+/* Ensure dropdown-content overlays page content */
+.dropdown-content {
+    position: relative;
+    z-index: 1200;
+}
+
+/* Fix for mobile menu covering content */
+@media (max-width: 768px) {
+    .nav-menu {
+        box-shadow: 0 8px 32px rgba(0,212,255,0.13);
+    }
+}
+
+/* Prevent image drag ghosting on icons */
+img, .feature-icon i, .service-icon i, .contact-icon i, .slider-icon, .footer .logo i {
+    -webkit-user-drag: none;
+    user-drag: none;
+}
+
+/* Visually hidden utility class for accessibility */
+.visually-hidden {
+    position: absolute !important;
+    height: 1px; width: 1px;
+    overflow: hidden;
+    clip: rect(1px, 1px, 1px, 1px);
+    white-space: nowrap;
+}
+
+/* Prevent tap highlight on mobile for buttons/links */
+a, button, .btn, .nav-link, .dropdown-link, .slider-link, .feature-card, .footer-link, .social-link {
+    -webkit-tap-highlight-color: rgba(0,0,0,0.08);
+}
+
+/* Fix for iOS Safari input zoom on focus */
+input[type="email"], input[type="text"], input[type="tel"], input[type="password"] {
+    font-size: 16px;
+}
+
+/* Ensure iframe maps are responsive */
+.map-container iframe {
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-height: 240px;
+    border: 0;
+}
+
+/* Prevent overflow on small screens for grids */
+@media (max-width: 600px) {
+    .features-grid, .ai-features-grid, .services-grid, .contact-grid {
+        grid-template-columns: 1fr !important;
+        gap: 1.2rem !important;
+    }
+}
+
+/* Fix for dropdown-panel z-index over nav */
+.dropdown-panel {
+    z-index: 1100;
+}
+
+/* Fix for slider-panel on mobile */
+@media (max-width: 600px) {
+    .slider-panel {
+        left: 0;
+        right: auto;
+        min-width: 90vw;
+        max-width: 98vw;
+    }
+}
+
+/* Prevent accidental text selection on drag for cards */
+.feature-card, .service-card, .contact-card {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* Fix for footer links on mobile */
+@media (max-width: 600px) {
+    .footer-content {
+        flex-direction: column !important;
+        align-items: stretch !important;
+    }
+}
+
+/* Ensure .dropdown-content overlays above .live-features-bg-slideshow */
+.dropdown-content {
+    background: #fff;
+    z-index: 2002;
+}
+
+/* Add pointer cursor to clickable elements */
+.slider-dot, .feature-card, .footer-link, .social-link {
+    cursor: pointer;
+}
+
+/* Fix for mobile menu icon alignment */
+.mobile-menu {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Prevent double border on .btn-secondary when overridden */
+.btn.btn-secondary[style*="background:linear-gradient"] {
+    border: none !important;
+}
+
+/* Fix for .carousel-dot focus */
+.carousel-dot:focus {
+    outline: 2px solid #00d4ff;
+    outline-offset: 2px;
+}
+
+/* Fix for .slider-dot focus */
+.slider-dot:focus {
+    outline: 2px solid #00d4ff;
+    outline-offset: 2px;
+}
