@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.js": "/D-V/static/js/main.eb290436.js",
-    "index.html": "/D-V/index.html",
-    "main.eb290436.js.map": "/D-V/static/js/main.eb290436.js.map"
+    "main.js": "/D-V-TECHNOLOGIES/static/js/main.fe7038fe.js",
+    "index.html": "/D-V-TECHNOLOGIES/index.html",
+    "main.fe7038fe.js.map": "/D-V-TECHNOLOGIES/static/js/main.fe7038fe.js.map"
   },
   "entrypoints": [
-    "static/js/main.eb290436.js"
+    "static/js/main.fe7038fe.js"
   ]
 }

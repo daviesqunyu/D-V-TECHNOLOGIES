@@ -21,7 +21,7 @@
   "bugs": {
     "url": "https://github.com/daviesqunyu/D-V/issues"
   },
-  "homepage": "https://daviesqunyu.github.io/D-V",
+  "homepage": "https://daviesqunyu.github.io/D-V-TECHNOLOGIES",
   "dependencies": {
     "express": "^4.17.1",
     "react": "^18.2.0",
