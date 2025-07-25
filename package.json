@@ -9,7 +9,13 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d build",
+    "serve": "node server.js",
+    "build:analyze": "npm run build && npx webpack-bundle-analyzer build/static/js/*.js",
+    "lint": "eslint src --ext .js,.jsx",
+    "lint:fix": "eslint src --ext .js,.jsx --fix",
+    "format": "prettier --write src/**/*.{js,jsx,json,css,md}",
+    "audit-fix": "npm audit fix"
   },
   "repository": {
     "type": "git",

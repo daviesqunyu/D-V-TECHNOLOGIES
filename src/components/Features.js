@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 
@@ -130,4 +130,4 @@ const Features = () => {
   );
 };
 
-export default Features;
+export default memo(Features);
