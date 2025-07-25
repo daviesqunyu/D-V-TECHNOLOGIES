@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, memo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import styled from 'styled-components';
 
@@ -284,18 +284,24 @@ const Navigation = ({
         <MobileControls>
           <MobileButton
             onClick={() => setIsDrawerOpen(true)}
+            onKeyDown={(e) => e.key === 'Enter' && setIsDrawerOpen(true)}
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             aria-label="Open menu drawer"
+            tabIndex={0}
+            role="button"
           >
             <i className="fas fa-bars"></i>
           </MobileButton>
           
           <MobileButton
             onClick={() => setIsMenuOpen(!isMenuOpen)}
+            onKeyDown={(e) => e.key === 'Enter' && setIsMenuOpen(!isMenuOpen)}
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             aria-label="Toggle mobile menu"
+            tabIndex={0}
+            role="button"
           >
             <i className={isMenuOpen ? "fas fa-times" : "fas fa-ellipsis-v"}></i>
           </MobileButton>
@@ -305,4 +311,4 @@ const Navigation = ({
   );
 };
 
-export default Navigation;
+export default memo(Navigation);
