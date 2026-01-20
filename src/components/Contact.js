@@ -161,7 +161,8 @@ const Contact = () => {
         // Listen for account changes
         window.ethereum.on('accountsChanged', handleAccountsChanged);
       } catch (error) {
-        console.error('Error checking wallet connection:', error);
+        // Handle error silently for wallet connection check
+        // This is expected behavior when user hasn't connected wallet yet
       }
     }
   };
@@ -181,8 +182,12 @@ const Contact = () => {
         setWalletAddress(accounts[0]);
       }
     } catch (error) {
-      console.error('Error connecting wallet:', error);
-      alert('Failed to connect wallet. Please try again.');
+      // Handle specific error cases
+      if (error.code === 4001) {
+        alert('Wallet connection was rejected. Please try again if you want to connect.');
+      } else {
+        alert('Failed to connect wallet. Please ensure MetaMask is unlocked and try again.');
+      }
     }
   };
 

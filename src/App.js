@@ -12,6 +12,7 @@ import Contact from './components/Contact';
 import Footer from './components/Footer';
 import MobileMenu from './components/MobileMenu';
 import SideDrawer from './components/SideDrawer';
+import ErrorBoundary from './components/ErrorBoundary';
 
 // Global Styles
 const GlobalStyle = createGlobalStyle`
@@ -234,58 +235,60 @@ function App() {
   }, []);
 
   return (
-    <ThemeProvider theme={theme}>
-      <GlobalStyle />
-      <AppContainer>
-        <AnimatePresence>
-          {loading && (
-            <LoadingScreen
-              initial={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
+    <ErrorBoundary>
+      <ThemeProvider theme={theme}>
+        <GlobalStyle />
+        <AppContainer>
+          <AnimatePresence>
+            {loading && (
+              <LoadingScreen
+                initial={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.5 }}
+              >
+                <LoadingSpinner />
+              </LoadingScreen>
+            )}
+          </AnimatePresence>
+
+          {!loading && (
+            <MainContent
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
               transition={{ duration: 0.5 }}
             >
-              <LoadingSpinner />
-            </LoadingScreen>
+              <Navigation
+                activeSection={activeSection}
+                onSectionChange={scrollToSection}
+                isMenuOpen={isMenuOpen}
+                setIsMenuOpen={setIsMenuOpen}
+                setIsDrawerOpen={setIsDrawerOpen}
+                isMobile={isMobile}
+              />
+
+              <SideDrawer
+                isOpen={isDrawerOpen}
+                onClose={() => setIsDrawerOpen(false)}
+                onSectionChange={scrollToSection}
+              />
+
+              <MobileMenu
+                isOpen={isMenuOpen}
+                onClose={() => setIsMenuOpen(false)}
+                onSectionChange={scrollToSection}
+                activeSection={activeSection}
+              />
+
+              <Hero onSectionChange={scrollToSection} />
+              <Features />
+              <Services />
+              <Contact />
+              <Footer onSectionChange={scrollToSection} />
+            </MainContent>
           )}
-        </AnimatePresence>
-
-        {!loading && (
-          <MainContent
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
-          >
-            <Navigation
-              activeSection={activeSection}
-              onSectionChange={scrollToSection}
-              isMenuOpen={isMenuOpen}
-              setIsMenuOpen={setIsMenuOpen}
-              setIsDrawerOpen={setIsDrawerOpen}
-              isMobile={isMobile}
-            />
-
-            <SideDrawer
-              isOpen={isDrawerOpen}
-              onClose={() => setIsDrawerOpen(false)}
-              onSectionChange={scrollToSection}
-            />
-
-            <MobileMenu
-              isOpen={isMenuOpen}
-              onClose={() => setIsMenuOpen(false)}
-              onSectionChange={scrollToSection}
-              activeSection={activeSection}
-            />
-
-            <Hero onSectionChange={scrollToSection} />
-            <Features />
-            <Services />
-            <Contact />
-            <Footer onSectionChange={scrollToSection} />
-          </MainContent>
-        )}
-      </AppContainer>
-    </ThemeProvider>
+        </AppContainer>
+      </ThemeProvider>
+    </ErrorBoundary>
   );
 }
 
