@@ -7,56 +7,1134 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
-    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
 
     <style>
-        /* (Keep all other styles as is, excerpt omitted for brevity) */
-
-        /* About dropdown content */
-        .dropdown-content#about-section {
-            display: none;
-            padding: 3rem 0;
-            background: #f8fafc;
-            min-height: 60vh;
-            animation: fadePage 0.7s;
+        /* Global Styles */
+        :root {
+            --primary: #00d4ff;
+            --dark: #0a1428;
+            --accent: #ff6b6b;
+            --bg: #f1f5f9;
         }
-        .dropdown-content#about-section.active {
-            display: block;
-            animation: fadePage 0.7s;
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Montserrat', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg);
+            color: #222;
         }
-        .about-container {
-            max-width: 1000px;
+        /* Navbar */
+        .navbar {
+            position: fixed;
+            top: 0; left: 0; width: 100%;
+            background: rgba(10, 20, 40, 0.97);
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0, 212, 255, 0.1);
+        }
+        .nav-container {
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 1.5rem;
         }
-
-        /* AI Features Section - add a fixed bg image */
-        .ai-features-section {
-            background: url('img/dv-tech-bg.jpg') center/cover no-repeat, #fff;
-            padding: 3rem 0;
+        .logo {
+            color: var(--primary);
+            font-size: 2rem;
+            font-weight: bold;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .logo i { animation: spin 4s linear infinite; }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 0.5rem;
+        }
+        .nav-item { position: relative; }
+        .nav-link {
+            color: #fff;
+            text-decoration: none;
+            padding: 1rem 1.2rem;
+            border-radius: 8px;
+            transition: background 0.3s, color 0.3s;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: var(--primary);
+            background: rgba(0, 212, 255, 0.08);
+        }
+        /* Unique Dropdown */
+        .dropdown-panel {
+            display: none;
+            position: absolute;
+            left: 0; top: 110%;
+            min-width: 320px;
+            background: #fff;
+            border-radius: 18px;
+            box-shadow: 0 10px 40px rgba(0, 212, 255, 0.18);
+            padding: 1.2rem 1.5rem;
+            z-index: 1001;
+            animation: dropdownFade 0.5s;
+        }
+        @keyframes dropdownFade {
+            from { opacity: 0; transform: translateY(20px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+        .nav-item:focus-within .dropdown-panel,
+        .nav-item:hover .dropdown-panel {
+            display: block;
+        }
+        .dropdown-panel h4 {
+            color: var(--primary);
+            margin-bottom: 0.7rem;
+            font-size: 1.1rem;
+        }
+        .dropdown-links {
+            display: flex;
+            flex-direction: column;
+            gap: 0.7rem;
+        }
+        .dropdown-link {
+            color: #222;
+            text-decoration: none;
+            padding: 0.6rem 0.8rem;
+            border-radius: 7px;
+            transition: background 0.2s, color 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            font-size: 1rem;
+        }
+        .dropdown-link:hover {
+            background: rgba(0, 212, 255, 0.08);
+            color: var(--primary);
+        }
+        .mobile-menu {
+            display: none;
+            color: #fff;
+            font-size: 1.8rem;
+            cursor: pointer;
+        }
+        @media (max-width: 900px) {
+            .nav-container { padding: 0 0.5rem; }
+        }
+        @media (max-width: 768px) {
+            .nav-container {
+                padding: 0 1rem;
+            }
+            .nav-menu {
+                flex-direction: column;
+                position: absolute;
+                top: 100%; left: 0;
+                width: 100%;
+                background: var(--dark);
+                display: none;
+                z-index: 1000;
+                box-shadow: 0 8px 32px rgba(0,212,255,0.13);
+            }
+            .nav-menu.active { display: flex; }
+            .dropdown-panel {
+                position: static;
+                min-width: unset;
+                box-shadow: none;
+                background: #f8fafc;
+                margin-bottom: 1rem;
+                border-radius: 8px;
+            }
+            .mobile-menu { display: block; }
+        }
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            padding-top: 90px;
+            background: var(--dark);
             position: relative;
+            overflow: hidden;
         }
-        .ai-features-section:before {
+        .hero-slideshow {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1;
+        }
+        .slide {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            opacity: 0; transition: opacity 1.5s;
+            background-size: cover; background-position: center;
+        }
+        .slide.active { opacity: 1; }
+        .slide1 { background: linear-gradient(135deg, #0a1428 0%, #1e3a8a 50%, #00d4ff 100%); }
+        .slide2 { background: linear-gradient(135deg, #0f172a 0%, #7c3aed 50%, #00d4ff 100%); }
+        .slide3 { background: linear-gradient(135deg, #1e293b 0%, #059669 50%, #00d4ff 100%); }
+        .slide4 { background: linear-gradient(135deg, #0a1428 0%, #ff6b6b 50%, #00d4ff 100%);}
+        .slide5 { background: linear-gradient(135deg, #0f172a 0%, #00d4ff 50%, #7c3aed 100%);}
+        .hero-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.4); z-index: 2;
+        }
+        .floating-tech {
+            position: absolute; width: 100%; height: 100%; pointer-events: none; z-index: 3;
+        }
+        .tech-icon {
+            position: absolute;
+            color: rgba(0, 212, 255, 0.25);
+            font-size: 2.2rem;
+            animation: floatTech 18s infinite linear;
+        }
+        @keyframes floatTech {
+            0% { transform: translateY(100vh) translateX(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100px) translateX(50px) rotate(360deg); opacity: 0; }
+        }
+        .hero-content {
+            position: relative; z-index: 4; text-align: center; max-width: 900px; padding: 0 2rem;
+        }
+        .hero h1 {
+            font-size: 3.5rem;
+            color: white;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #00d4ff, #ffffff, #ff6b6b, #00d4ff);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientShift 4s ease infinite;
+            text-shadow: 0 0 30px rgba(0, 212, 255, 0.5);
+        }
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        .hero-subtitle {
+            font-size: 1.6rem;
+            color: #cbd5e1;
+            margin-bottom: 1rem;
+            animation: fadeInUp 1s ease 0.5s both;
+        }
+        .hero-description {
+            font-size: 1.15rem;
+            color: #94a3b8;
+            margin-bottom: 2.5rem;
+            animation: fadeInUp 1s ease 1s both;
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .cta-buttons {
+            display: flex;
+            gap: 1.2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeInUp 1s ease 1.5s both;
+        }
+        .btn {
+            padding: 1rem 2.2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            text-decoration: none;
+            transition: all 0.4s;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .btn-primary {
+            background: linear-gradient(45deg, #00d4ff, #0066ff);
+            color: white;
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
+        }
+        .btn-secondary {
+            background: transparent;
+            color: #00d4ff;
+            border: 2px solid #00d4ff;
+        }
+        .btn:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(0, 212, 255, 0.4);
+        }
+        .btn::before {
             content: '';
             position: absolute;
-            top:0; left:0;width:100%;height:100%;
-            background: rgba(255,255,255,0.81);
-            z-index: 1;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
         }
-        .ai-features-section .content-container {
+        .btn:hover::before { left: 100%; }
+        /* Live Features Section */
+        .live-features {
+            background: #f8fafc;
+            padding: 3rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+        .live-features::before {
+            content: '';
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: url('https://www.transparenttextures.com/patterns/cubes.png');
+            opacity: 0.07;
+        }
+        .features-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
             position: relative;
             z-index: 2;
         }
-        /* Just for demo of bg image in other section: */
-        .hero.custom-bg {
-            background: url("img/pexels-cottonbro-8721318.jpg") center center/cover no-repeat;
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        .feature-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            transition: all 0.4s;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+        .feature-card::before {
+            content: '';
+            position: absolute; top: 0; left: 0; width: 100%; height: 4px;
+            background: linear-gradient(90deg, #00d4ff, #0066ff, #ff6b6b);
+            background-size: 200% 100%;
+            animation: shimmer 3s ease infinite;
+        }
+        @keyframes shimmer {
+            0%, 100% { background-position: 200% 0; }
+            50% { background-position: -200% 0; }
+        }
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(0, 212, 255, 0.18);
+            border-color: #00d4ff;
+        }
+        .feature-icon {
+            font-size: 2.5rem;
+            color: #00d4ff;
+            margin-bottom: 1rem;
+            animation: pulse 2s ease infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        .section-title {
+            font-size: 2.2rem;
+            text-align: center;
+            margin-bottom: 2.2rem;
+            background: linear-gradient(45deg, #0f172a, #00d4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        /* Dropdown Content Sections */
+        .dropdown-content {
+            display: none;
+            padding: 3rem 0;
+            background: white;
+            min-height: 60vh;
+            animation: fadePage 0.7s;
+        }
+        .dropdown-content.active {
+            display: block;
+            animation: fadePage 0.7s;
+        }
+        @keyframes fadePage {
+            from { opacity: 0; transform: translateY(40px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+        .content-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        .service-card {
+            background: linear-gradient(145deg, #ffffff, #f1f5f9);
+            padding: 2rem;
+            border-radius: 18px;
+            text-align: center;
+            transition: all 0.4s;
+            border: 1px solid rgba(0, 212, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        .service-card:hover {
+            transform: translateY(-10px) scale(1.03);
+            box-shadow: 0 20px 50px rgba(0, 212, 255, 0.13);
+        }
+        .service-icon {
+            font-size: 3rem;
+            color: #00d4ff;
+            margin-bottom: 1.2rem;
+        }
+        /* Contact Info */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        .contact-card {
+            background: linear-gradient(145deg, #0f172a, #1e293b);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 18px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        .contact-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 212, 255, 0.2);
+        }
+        .contact-icon {
+            font-size: 2rem;
+            color: #00d4ff;
+            margin-bottom: 0.7rem;
+        }
+        /* Contact Form */
+        .contact-form {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+            padding: 2rem;
+        }
+        .form-group {
+            margin-bottom: 1.1rem;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.4rem;
+            font-weight: 600;
+            color: #0f172a;
+        }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 0.7rem;
+            border-radius: 8px;
+            border: 1px solid #cbd5e1;
+            font-size: 1rem;
+            background: #f8fafc;
+            transition: border 0.2s;
+        }
+        .form-group input:focus, .form-group textarea:focus {
+            border: 1.5px solid #00d4ff;
+            outline: none;
+        }
+        /* Map Section */
+        .map-container {
+            height: 340px;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.09);
+            margin: 2rem 0;
+        }
+        /* Footer */
+        .footer {
+            background: #0a1428;
+            color: #cbd5e1;
+            padding: 2.5rem 0 1rem 0;
+            text-align: center;
+        }
+        .footer-content { max-width: 900px; margin: auto; }
+        .footer .logo { margin-bottom: 1rem; color: #00d4ff; font-size: 2rem; }
+        .social-links a {
+            color:#00d4ff; margin:0 10px; font-size:1.3rem; transition: color 0.2s;
+        }
+        .social-links a:hover { color: #ff6b6b; }
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2rem; }
+            .hero-subtitle { font-size: 1.1rem; }
+            .hero-description { font-size: 1rem; }
+            .cta-buttons { flex-direction: column; align-items: center; gap: 0.8rem; }
+            .section-title { font-size: 1.3rem; }
+            .navbar { padding: 0.5rem 0; }
+            .nav-container { padding: 0 0.5rem; }
+            .logo { font-size: 1.5rem; }
+        }
+        @media (max-width: 480px) {
+            .hero h1 { font-size: 1.8rem; }
+            .hero-subtitle { font-size: 1rem; }
+            .hero-description { font-size: 0.95rem; }
+            .btn { padding: 0.8rem 1.5rem; font-size: 0.9rem; }
+            .logo { font-size: 1.3rem; }
+            .hero-content { padding: 1rem 0.5rem; }
+        }
+        /* Additional responsive fixes */
+        @media (max-width: 900px) {
+            .dropdown-panel {
+                min-width: 250px;
+                left: -50px;
+            }
+        }
+        @media (max-width: 600px) {
+            .hero-content > div:first-child {
+                flex-wrap: wrap;
+                gap: 0.8rem !important;
+            }
+            .hero-content > div:first-child > span {
+                padding: 0.8rem !important;
+            }
+            .hero-content > div:nth-child(5) {
+                grid-template-columns: 1fr 1fr !important;
+                gap: 1rem !important;
+            }
+            .dropdown-panel {
+                position: static !important;
+                box-shadow: none !important;
+                background: rgba(248, 250, 252, 0.95) !important;
+            }
+            .wallet-section {
+                padding: 1.5rem !important;
+            }
+            .wallet-buttons {
+                flex-direction: column !important;
+                align-items: center !important;
+            }
+            #connectWalletBtn {
+                width: 100% !important;
+                max-width: 280px !important;
+                justify-content: center !important;
+            }
+        }
+        /* Carousel Styles */
+        .carousel-container {
+            max-width: 900px;
+            margin: 2rem auto 0 auto;
+            position: relative;
+            z-index: 10;
+        }
+        .carousel-slide {
+            display: none;
+            background: #fff;
+            border-radius: 18px;
+            box-shadow: 0 8px 32px rgba(0,212,255,0.10);
+            padding: 2rem 2.5rem;
+            text-align: center;
+            min-height: 220px;
+            transition: opacity 0.7s;
+        }
+        .carousel-slide.active {
+            display: block;
+            animation: fadePage 0.7s;
+        }
+        .carousel-controls {
+            display: flex;
+            justify-content: center;
+            gap: 1.2rem;
+            margin-top: 1.2rem;
+        }
+        .carousel-dot {
+            width: 14px; height: 14px;
+            border-radius: 50%;
+            background: #cbd5e1;
+            border: 2px solid #00d4ff;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .carousel-dot.active {
+            background: #00d4ff;
+        }
+        /* AI Features Section */
+        .ai-features-section {
+            background: #fff;
+            padding: 3rem 0;
+        }
+        .ai-features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        .ai-feature-card {
+            background: linear-gradient(135deg, #f1f5f9 60%, #e0f7fa 100%);
+            border-radius: 18px;
+            padding: 2rem 1.5rem;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0,212,255,0.08);
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: 1.5px solid #e0f7fa;
+        }
+        .ai-feature-card:hover {
+            transform: translateY(-8px) scale(1.03);
+            box-shadow: 0 16px 40px rgba(0,212,255,0.13);
+            border-color: #00d4ff;
+        }
+        .ai-feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #00d4ff;
+        }
+        .ai-feature-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: #0a1428;
+        }
+        .ai-feature-desc {
+            color: #64748b;
+            font-size: 1.05rem;
         }
     </style>
 </head>
 <body>
-    <!-- Top Left Sliding Info Panel ... (keep as is) ... -->
-    <!-- ... -->
+    <!-- Top Left Sliding Info Panel -->
+    <div class="top-left-slider">
+        <button id="mainMenuBtn" aria-label="Open main menu">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="slider-panel" id="mainSliderPanel">
+            <div class="slider-close-btn" id="sliderCloseBtn">
+                <i class="fas fa-times"></i>
+            </div>
+            <div class="slider-pages">
+                <!-- Home/About Slide -->
+                <div class="slider-page active" data-page="home">
+                    <div class="slider-header">
+                        <i class="fas fa-home slider-icon"></i>
+                        <span>About D&V Technologies</span>
+                    </div>
+                    <p style="color: #64748b; font-size: 1.05rem; line-height: 1.6; margin-bottom: 1rem;">
+                        <strong style="color: #0a1428;">D&V Technologies</strong> is a leading Kenyan tech company based in Lower Kabete, Nairobi. We solve current technological problems and deliver cutting-edge AI, IoT, and digital transformation solutions for businesses across Kenya and East Africa.
+                    </p>
+                    <ul class="slider-list">
+                        <li><i class="fas fa-lightbulb"></i> Innovation</li>
+                        <li><i class="fas fa-users"></i> Teamwork</li>
+                        <li><i class="fas fa-award"></i> Excellence</li>
+                        <li><i class="fas fa-globe-africa"></i> African Impact</li>
+                        <li><i class="fas fa-leaf"></i> Sustainability</li>
+                    </ul>
+                    <button class="slider-next" data-next="ai"><i class="fas fa-arrow-right"></i> Next</button>
+                </div>
+                <!-- AI Features Slide -->
+                <div class="slider-page" data-page="ai">
+                    <div class="slider-header">
+                        <i class="fas fa-brain slider-icon"></i>
+                        <span>AI Features</span>
+                    </div>
+                    <ul class="slider-features">
+                        <li><i class="fas fa-brain"></i> Deep Learning</li>
+                        <li><i class="fas fa-language"></i> NLP & Chatbots (Swahili & English)</li>
+                        <li><i class="fas fa-chart-line"></i> Predictive Analytics for Kenyan SMEs</li>
+                        <li><i class="fas fa-robot"></i> Automation Bots</li>
+                        <li><i class="fab fa-js-square"></i> JavaScript AI</li>
+                        <li><i class="fab fa-java"></i> Java AI</li>
+                    </ul>
+                    <button class="slider-prev" data-prev="home"><i class="fas fa-arrow-left"></i> Prev</button>
+                    <button class="slider-next" data-next="iot"><i class="fas fa-arrow-right"></i> Next</button>
+                    <a href="#" class="slider-link" data-section="ai-services"><i class="fas fa-robot"></i> View AI Solutions</a>
+                </div>
+                <!-- IoT Slide -->
+                <div class="slider-page" data-page="iot">
+                    <div class="slider-header">
+                        <i class="fas fa-wifi slider-icon"></i>
+                        <span>IoT Integration</span>
+                    </div>
+                    <ul class="slider-features">
+                        <li><i class="fas fa-satellite-dish"></i> Smart Devices for Kenyan Homes</li>
+                        <li><i class="fas fa-home"></i> Smart Home/Office</li>
+                        <li><i class="fas fa-industry"></i> Industrial IoT for Nairobi Factories</li>
+                        <li><i class="fas fa-cloud"></i> Cloud Connectivity</li>
+                    </ul>
+                    <button class="slider-prev" data-prev="ai"><i class="fas fa-arrow-left"></i> Prev</button>
+                    <button class="slider-next" data-next="software"><i class="fas fa-arrow-right"></i> Next</button>
+                    <a href="#" class="slider-link" data-section="iot-services"><i class="fas fa-wifi"></i> View IoT Solutions</a>
+                </div>
+                <!-- Software Slide -->
+                <div class="slider-page" data-page="software">
+                    <div class="slider-header">
+                        <i class="fas fa-laptop-code slider-icon"></i>
+                        <span>Software Development</span>
+                    </div>
+                    <ul class="slider-features">
+                        <li><i class="fas fa-laptop-code"></i> Web Apps for Kenyan Startups</li>
+                        <li><i class="fas fa-mobile-alt"></i> Mobile Apps (Android & iOS)</li>
+                        <li><i class="fas fa-database"></i> Enterprise Systems</li>
+                        <li><i class="fab fa-js-square"></i> JavaScript Development</li>
+                        <li><i class="fab fa-java"></i> Java Development</li>
+                    </ul>
+                    <button class="slider-prev" data-prev="iot"><i class="fas fa-arrow-left"></i> Prev</button>
+                    <button class="slider-next" data-next="hardware"><i class="fas fa-arrow-right"></i> Next</button>
+                    <a href="#" class="slider-link" data-section="software-dev"><i class="fas fa-laptop-code"></i> View Software</a>
+                </div>
+                <!-- Hardware Slide -->
+                <div class="slider-page" data-page="hardware">
+                    <div class="slider-header">
+                        <i class="fas fa-server slider-icon"></i>
+                        <span>Hardware Solutions</span>
+                    </div>
+                    <ul class="slider-features">
+                        <li><i class="fas fa-server"></i> Server Infrastructure</li>
+                        <li><i class="fas fa-network-wired"></i> Network Solutions</li>
+                        <li><i class="fas fa-microchip"></i> Embedded Systems</li>
+                        <li><i class="fas fa-tools"></i> Device Repair (Phones, Laptops)</li>
+                    </ul>
+                    <button class="slider-prev" data-prev="software"><i class="fas fa-arrow-left"></i> Prev</button>
+                    <button class="slider-next" data-next="contact"><i class="fas fa-arrow-right"></i> Next</button>
+                    <a href="#" class="slider-link" data-section="hardware-solutions"><i class="fas fa-server"></i> View Hardware</a>
+                </div>
+                <!-- Contact Slide -->
+                <div class="slider-page" data-page="contact">
+                    <div class="slider-header">
+                        <i class="fas fa-envelope slider-icon"></i>
+                        <span>Contact Us</span>
+                    </div>
+                    <ul class="slider-contact">
+                        <li><i class="fas fa-map-marker-alt"></i> <a href="https://maps.google.com/?q=Lower+Kabete+Wagituni+Villa+Estate" target="_blank">Lower Kabete, Nairobi</a></li>
+                        <li><i class="fas fa-phone"></i> <a href="tel:0759075816">0759 075 816</a></li>
+                        <li><i class="fas fa-envelope"></i> <a href="mailto:info@dvtechnologies.com">info@dvtechnologies.com</a></li>
+                        <li><i class="fas fa-globe"></i> <a href="https://www.dvtechnologies.com" target="_blank">dvtechnologies.com</a></li>
+                    </ul>
+                    <button class="slider-prev" data-prev="hardware"><i class="fas fa-arrow-left"></i> Prev</button>
+                    <a href="#contact" class="slider-link"><i class="fas fa-envelope"></i> Go to Contact Section</a>
+                </div>
+            </div>
+            <div class="slider-nav-dots">
+                <span class="slider-dot active" data-page="home"></span>
+                <span class="slider-dot" data-page="ai"></span>
+                <span class="slider-dot" data-page="iot"></span>
+                <span class="slider-dot" data-page="software"></span>
+                <span class="slider-dot" data-page="hardware"></span>
+                <span class="slider-dot" data-page="contact"></span>
+            </div>
+        </div>
+    </div>
+    <style>
+        /* drawer css */
 
+    .top-left-slider {
+        position: fixed;
+        top: 15px;
+        left: 15px;
+        z-index: 2001;
+    }
+    .top-left-slider button {
+        background: linear-gradient(135deg, #0a1428 0%, #1e293b 100%);
+        color: #00d4ff;
+        border: 2px solid rgba(0, 212, 255, 0.3);
+        border-radius: 50%;
+        width: 56px;
+        height: 56px;
+        font-size: 1.8rem;
+        box-shadow: 0 4px 20px rgba(0, 212, 255, 0.2),
+                    0 0 0 0 rgba(0, 212, 255, 0.4);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+    .top-left-slider button:before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        background: radial-gradient(circle, rgba(0, 212, 255, 0.3) 0%, transparent 70%);
+        transform: translate(-50%, -50%);
+        border-radius: 50%;
+        transition: width 0.6s ease, height 0.6s ease;
+    }
+    .top-left-slider button:hover {
+        background: linear-gradient(135deg, #00d4ff 0%, #0066ff 100%);
+        color: #fff;
+        border-color: #00d4ff;
+        box-shadow: 0 8px 32px rgba(0, 212, 255, 0.4),
+                    0 0 0 8px rgba(0, 212, 255, 0.1);
+        transform: scale(1.05);
+    }
+    .top-left-slider button:hover:before {
+        width: 100px;
+        height: 100px;
+    }
+    .top-left-slider button:active {
+        transform: scale(0.95);
+    }
+    .top-left-slider button i {
+        position: relative;
+        z-index: 1;
+        transition: transform 0.3s ease;
+    }
+    .top-left-slider button:hover i {
+        transform: rotate(180deg);
+    }
+    .slider-panel {
+        display: none;
+        position: absolute;
+        top: 70px;
+        left: 0;
+        width: 280px;
+        max-height: 400px;
+        background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+        border-radius: 12px;
+        box-shadow: 0 8px 25px rgba(0, 212, 255, 0.12),
+                    0 2px 8px rgba(0, 0, 0, 0.08);
+        padding: 1rem;
+        animation: slideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        overflow-y: auto;
+        border: 1px solid rgba(0, 212, 255, 0.1);
+        position: relative;
+    }
+    .slider-close-btn {
+        position: absolute;
+        top: 0.5rem;
+        right: 0.5rem;
+        width: 24px;
+        height: 24px;
+        background: rgba(255, 107, 107, 0.1);
+        border: 1px solid rgba(255, 107, 107, 0.3);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        z-index: 10;
+    }
+    .slider-close-btn:hover {
+        background: #ff6b6b;
+        border-color: #ff6b6b;
+        transform: scale(1.1);
+    }
+    .slider-close-btn i {
+        color: #ff6b6b;
+        font-size: 0.7rem;
+        transition: color 0.3s ease;
+    }
+    .slider-close-btn:hover i {
+        color: #fff;
+    }
+    @keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateY(-20px) scale(0.95);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+    .slider-pages {
+        position: relative;
+        min-height: 150px;
+    }
+    .slider-page {
+        display: none;
+        flex-direction: column;
+        animation: fadePage 0.5s;
+    }
+    .slider-page.active {
+        display: flex;
+    }
+    .slider-header {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-bottom: 0.8rem;
+        color: #0a1428;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid rgba(0, 212, 255, 0.1);
+        position: relative;
+    }
+    .slider-header::after {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        width: 40px;
+        height: 2px;
+        background: linear-gradient(90deg, #00d4ff, #0066ff);
+        border-radius: 1px;
+    }
+    .slider-icon {
+        font-size: 1.2rem;
+        color: #00d4ff;
+        background: rgba(0, 212, 255, 0.1);
+        padding: 0.4rem;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        transition: all 0.3s ease;
+    }
+    .slider-header:hover .slider-icon {
+        background: rgba(0, 212, 255, 0.2);
+        transform: scale(1.1);
+    }
+    .slider-list, .slider-features, .slider-contact {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 0.7rem 0;
+    }
+    .slider-list li, .slider-features li, .slider-contact li {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        font-size: 0.95rem;
+        margin-bottom: 0.3rem;
+        color: #64748b;
+        padding: 0.4rem;
+        border-radius: 6px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+    }
+    .slider-list li:hover, .slider-features li:hover, .slider-contact li:hover {
+        background: rgba(0, 212, 255, 0.05);
+        color: #0a1428;
+        transform: translateX(5px);
+    }
+    .slider-list li::before, .slider-features li::before, .slider-contact li::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 0;
+        height: 100%;
+        background: linear-gradient(90deg, rgba(0, 212, 255, 0.1), transparent);
+        transition: width 0.3s ease;
+    }
+    .slider-list li:hover::before, .slider-features li:hover::before, .slider-contact li:hover::before {
+        width: 100%;
+    }
+    .slider-list i, .slider-features i, .slider-contact i {
+        color: #00d4ff;
+        min-width: 1.2em;
+        text-align: center;
+        background: rgba(0, 212, 255, 0.1);
+        padding: 0.2rem;
+        border-radius: 50%;
+        transition: all 0.3s ease;
+        z-index: 1;
+        position: relative;
+        font-size: 0.9rem;
+    }
+    .slider-list li:hover i, .slider-features li:hover i, .slider-contact li:hover i {
+        background: rgba(0, 212, 255, 0.2);
+        transform: scale(1.1);
+    }
+    .slider-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        background: linear-gradient(45deg, #00d4ff, #0066ff);
+        color: #fff;
+        border-radius: 15px;
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+        font-weight: 600;
+        text-decoration: none;
+        margin-top: 0.8rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 3px 12px rgba(0, 212, 255, 0.3);
+        position: relative;
+        overflow: hidden;
+    }
+    .slider-link:hover {
+        background: linear-gradient(45deg, #0066ff, #00d4ff);
+        color: #fff;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0, 212, 255, 0.4);
+    }
+    .slider-link::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: left 0.5s ease;
+    }
+    .slider-link:hover::before {
+        left: 100%;
+    }
+    .slider-next, .slider-prev {
+        background: rgba(0, 212, 255, 0.1);
+        color: #00d4ff;
+        border: 1px solid rgba(0, 212, 255, 0.3);
+        border-radius: 12px;
+        padding: 0.3rem 0.8rem;
+        font-size: 0.8rem;
+        font-weight: 500;
+        margin: 0.3rem 0.3rem 0 0;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+    }
+    .slider-next:hover, .slider-prev:hover {
+        background: #00d4ff;
+        color: #fff;
+        border-color: #00d4ff;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(0, 212, 255, 0.3);
+    }
+    .slider-nav-dots {
+        display: flex;
+        justify-content: center;
+        gap: 0.4rem;
+        margin-top: 0.6rem;
+        padding-top: 0.6rem;
+        border-top: 1px solid rgba(0, 212, 255, 0.1);
+    }
+    .slider-dot {
+        width: 10px; 
+        height: 10px;
+        border-radius: 50%;
+        background: rgba(203, 213, 225, 0.5);
+        border: 1px solid rgba(0, 212, 255, 0.3);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+    .slider-dot::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        background: #00d4ff;
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        transition: all 0.3s ease;
+    }
+    .slider-dot:hover {
+        border-color: #00d4ff;
+        transform: scale(1.2);
+    }
+    .slider-dot.active {
+        background: #00d4ff;
+        border-color: #00d4ff;
+        box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.2);
+    }
+    .slider-dot.active::before {
+        width: 4px;
+        height: 4px;
+        background: #fff;
+    }
+    @media (max-width: 600px) {
+        .top-left-slider { top: 70px; left: 10px; }
+        .slider-panel { 
+            width: 260px;
+            max-width: 85vw;
+            padding: 0.8rem; 
+        }
+        .slider-header { font-size: 1rem; }
+        .slider-list li, .slider-features li, .slider-contact li {
+            font-size: 0.9rem;
+            padding: 0.3rem;
+        }
+    }
+    @media (max-width: 480px) {
+        .top-left-slider { top: 65px; left: 5px; }
+        .slider-panel { 
+            width: 240px;
+            max-width: 90vw;
+            padding: 0.7rem;
+        }
+        .slider-header { font-size: 0.9rem; }
+        .slider-list li, .slider-features li, .slider-contact li {
+            font-size: 0.85rem;
+            padding: 0.25rem;
+        }
+    }
+    </style>
+    <script>
+        // js script
+
+
+
+            const menuBtn = document.getElementById('mainMenuBtn');
+    const sliderPanel = document.getElementById('mainSliderPanel');
+    const sliderPages = sliderPanel.querySelectorAll('.slider-page');
+    const sliderDots = sliderPanel.querySelectorAll('.slider-dot');
+    let currentPage = 0;
+    const pageOrder = ['home','ai','iot','software','hardware','contact'];
+    function showSliderPage(idx) {
+        sliderPages.forEach((p,i) => p.classList.toggle('active', i===idx));
+        sliderDots.forEach((d,i) => d.classList.toggle('active', i===idx));
+        currentPage = idx;
+    }
+    menuBtn.onclick = function(e) {
+        e.stopPropagation();
+        sliderPanel.style.display = sliderPanel.style.display === 'block' ? 'none' : 'block';
+        showSliderPage(currentPage);
+    };
+    
+    // Close button functionality
+    document.getElementById('sliderCloseBtn').onclick = function(e) {
+        e.stopPropagation();
+        sliderPanel.style.display = 'none';
+    };
+    sliderPanel.addEventListener('click', function(e) { e.stopPropagation(); });
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('.top-left-slider')) {
+            sliderPanel.style.display = 'none';
+        }
+    });
+    sliderPanel.querySelectorAll('.slider-next').forEach(btn => {
+        btn.onclick = function() {
+            let next = this.getAttribute('data-next');
+            let idx = pageOrder.indexOf(next);
+            if(idx !== -1) showSliderPage(idx);
+        };
+    });
+    sliderPanel.querySelectorAll('.slider-prev').forEach(btn => {
+        btn.onclick = function() {
+            let prev = this.getAttribute('data-prev');
+            let idx = pageOrder.indexOf(prev);
+            if(idx !== -1) showSliderPage(idx);
+        };
+    });
+    sliderDots.forEach((dot,i) => {
+        dot.onclick = () => showSliderPage(i);
+    });
+    sliderPanel.querySelectorAll('.slider-link[data-section]').forEach(link => {
+        link.onclick = function(e) {
+            e.preventDefault();
+            const sectionId = this.getAttribute('data-section');
+            if(sectionId) {
+                document.querySelectorAll('.dropdown-content').forEach(sec => sec.classList.remove('active'));
+                const target = document.getElementById(sectionId);
+                if(target) {
+                    target.classList.add('active');
+                    window.scrollTo({top: target.offsetTop-70, behavior:'smooth'});
+                }
+            }
+            sliderPanel.style.display = 'none';
+        };
+    });
+    </script>
     <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-container">
@@ -84,9 +1162,10 @@
                     <div class="dropdown-panel">
                         <h4>Company</h4>
                         <div class="dropdown-links">
-                            <a href="https://www.instagram.com/d.vtechnologies/" class="dropdown-link" target="_blank"><i class="fab fa-instagram"></i> Instagram</a>
-                            <a href="https://www.linkedin.com/in/d-and-v-tech-23484337a" class="dropdown-link" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a>
-                            <a href="https://wa.me/254759075816" class="dropdown-link" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp Business</a>
+                            <a href="https://www.linkedin.com/company/dvtechnologies" class="dropdown-link" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a>
+                            <a href="https://twitter.com/dvtechnologies" class="dropdown-link" target="_blank"><i class="fab fa-twitter"></i> Twitter</a>
+                            <a href="https://github.com/dvtechnologies" class="dropdown-link" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+                            <a href="https://facebook.com/dvtechnologies" class="dropdown-link" target="_blank"><i class="fab fa-facebook"></i> Facebook</a>
                         </div>
                     </div>
                 </li>
@@ -99,95 +1178,185 @@
             </div>
         </div>
     </nav>
-
-    <!-- Hero/Main Section --><!-- keep as is but demo bg added -->
-    <section id="home" class="hero custom-bg" style="min-height: 90vh; display: flex; align-items: center; justify-content: center; flex-direction: column; position: relative; overflow: hidden;">
-        <!-- This section now demonstrates a fixed bg image using .custom-bg -->
-        <!-- ... -->
-    </section>
-    <!-- Carousel Section: About/Pages Switcher --><!-- keep as is -->
-    <div class="carousel-container" id="carouselContainer">
-        <!-- ... -->
-    </div>
-
-    <!-- About Section (Dropdown :: Fixed) -->
-    <section id="about-section" class="dropdown-content">
-        <div class="about-container">
-            <h2 class="section-title">About D&V Technologies</h2>
-            <p style="font-size:1.09rem; color:#64748b; margin-bottom:1.2rem;">
-                <b>D&V Technologies</b> is a Kenyan-owned ICT company based in Nairobi, Lower Kabete. We are passionate innovators delivering local-first technology—AI, IoT, software/hardware—for businesses and communities across Kenya and East Africa. 
-            </p>
-            <div style="margin-bottom:1.2rem; display:flex; gap:2rem; flex-wrap:wrap;">
-                <div><i class="fas fa-lightbulb" style="color:#00d4ff; font-size:2rem;"></i><br><b>Innovation</b></div>
-                <div><i class="fas fa-users" style="color:#ff6b6b; font-size:2rem;"></i><br><b>Teamwork</b></div>
-                <div><i class="fas fa-award" style="color:#7c3aed; font-size:2rem;"></i><br><b>Excellence</b></div>
-                <div><i class="fas fa-globe-africa" style="color:#059669; font-size:2rem;"></i><br><b>African Impact</b></div>
-                <div><i class="fas fa-leaf" style="color:#22c55e; font-size:2rem;"></i><br><b>Sustainability</b></div>
+    
+    <!-- Hero/Main Section -->
+    <section id="home" class="hero" style="min-height: 90vh; display: flex; align-items: center; justify-content: center; flex-direction: column; background: linear-gradient(120deg, #0a1428 60%, #00d4ff 100%); position: relative; overflow: hidden;">
+        <div class="hero-overlay" style="background: rgba(0,0,0,0.45); position: absolute; top:0; left:0; width:100%; height:100%; z-index:1;"></div>
+        <div class="hero-content" style="position: relative; z-index:2; text-align:center; max-width: 700px; padding: 2rem 1rem;">
+            <div style="display:flex; justify-content:center; gap:1.2rem; margin-bottom:1.2rem;">
+            <span style="background:rgba(0,212,255,0.13); border-radius:50%; padding:1.1rem;">
+                <i class="fas fa-city" style="color:#00d4ff; font-size:2.2rem;" title="Nairobi Tech"></i>
+            </span>
+            <span style="background:rgba(255,107,107,0.13); border-radius:50%; padding:1.1rem;">
+                <i class="fas fa-cogs" style="color:#ff6b6b; font-size:2.2rem;" title="IT Solutions"></i>
+            </span>
+            <span style="background:rgba(124,58,237,0.13); border-radius:50%; padding:1.1rem;">
+                <i class="fas fa-microchip" style="color:#7c3aed; font-size:2.2rem;" title="Hardware"></i>
+            </span>
+            <span style="background:rgba(5,150,105,0.13); border-radius:50%; padding:1.1rem;">
+                <i class="fas fa-laptop-code" style="color:#059669; font-size:2.2rem;" title="Software"></i>
+            </span>
+            <span style="background:rgba(255,215,0,0.13); border-radius:50%; padding:1.1rem;">
+                <i class="fas fa-network-wired" style="color:#f7df1e; font-size:2.2rem;" title="Connectivity"></i>
+            </span>
+            <span style="background:rgba(0,0,0,0.13); border-radius:50%; padding:1.1rem;">
+                <i class="fas fa-lightbulb" style="color:#0a1428; font-size:2.2rem;" title="Innovation"></i>
+            </span>
+            <span style="background:rgba(34,197,94,0.13); border-radius:50%; padding:1.1rem;">
+                <i class="fas fa-users" style="color:#22c55e; font-size:2.2rem;" title="Business"></i>
+            </span>
             </div>
-            <h3 class="section-title" style="font-size:1.4rem;">Our Vision</h3>
-            <p style="font-size:1.04rem; color:#64748b;margin-bottom:.6rem;">
-                To deliver digital solutions that power Africa's growth, and to make Nairobi Africa’s Silicon Savannah by 2030.
+            <h1 style="font-size:2.8rem; font-weight:800; background:linear-gradient(90deg,#00d4ff,#fff,#ff6b6b,#00d4ff); background-size:200% 200%; -webkit-background-clip:text; -webkit-text-fill-color:transparent; animation: gradientShift 4s ease infinite; margin-bottom:0.7rem;">
+            Nairobi's Next-Gen Tech Company
+            </h1>
+            <p class="hero-subtitle" style="font-size:1.3rem; color:#cbd5e1; margin-bottom:0.7rem;">
+            IT, Hardware &amp; Software Solutions for Modern Businesses
             </p>
-            <div style="margin-top:1.8rem;">
-                <b>Contact Us:</b>
-                <ul style="list-style:none;padding-left:0;margin-top:.4rem;">
-                    <li>
-                        <i class="fab fa-instagram" style="color:#e4405f"></i>
-                        <a href="https://www.instagram.com/d.vtechnologies/" style="color:#e4405f;text-decoration:underline;" target="_blank">Instagram</a>
-                    </li>
-                    <li>
-                        <i class="fab fa-linkedin" style="color:#0077b5"></i>
-                        <a href="https://l.instagram.com/?u=https%3A%2F%2Fwww.linkedin.com%2Fin%2Fd-and-v-tech-23484337a%3Futm_source%3Dig%26utm_medium%3Dsocial%26utm_content%3Dlink_in_bio%26fbclid%3DPAZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQMMjU2MjgxMDQwNTU4AAGnDWcp630oGUgOS2l_mmeaTBHDJebZwy8JIbBThj9lPV-zdU9CfeFD_T0QcX8_aem_YUtJKJ7uWSkCMNdNsRy2sg&e=AT1GQUXvOnbNHlyYWIzk92AToMBI77jzzVmhF5_DcmFOwST90hfGxvwPCXoVR-o736p3UYitOJIUPmOdJOE4XVYywrv8TvofpjvsE6yr7A" target="_blank" style="color:#0077b5;text-decoration:underline;">LinkedIn</a>
-                    </li>
-                    <li>
-                        <i class="fab fa-whatsapp" style="color:#25D366"></i>
-                        <a href="https://wa.me/254759075816" target="_blank" style="color:#25D366;text-decoration:underline;">WhatsApp Business (0759 075 816)</a>
-                    </li>
-                </ul>
+            <p class="hero-description" style="font-size:1.08rem; color:#94a3b8; margin-bottom:2rem;">
+            We deliver innovative ICT, hardware, and software solutions to help Nairobi and African businesses grow, adapt, and succeed. From IT support to digital transformation, we solve real-world problems with technology that works for you.
+            </p>
+     <!-- CTA Buttons -->
+            <div class="cta-buttons" style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; margin-bottom:2.2rem;">
+                <a href="#" class="btn btn-primary" data-section="iot-services"><i class="fas fa-wifi"></i>  INTERNET & Connectivity</a>
+                <a href="#" class="btn btn-primary" data-section="ai-services"><i class="fas fa-robot"></i> AI & IoT </a>
+                
+                <a href="#" class="btn btn-secondary" data-section="hardware-solutions" style="background:linear-gradient(45deg,#22c55e,#059669);color:#fff;border:none;">
+                    <i class="fas fa-server"></i>
+                    <i class="fas fa-laptop-code"></i>
+                    Hardware & Software Solutions
+                </a>
+            </div>
+
+            <div style="margin-top:2.2rem; display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:1.2rem;">
+            <div style="background:rgba(0,123,255,0.8); border-radius:12px; padding:1rem; color:#fff; text-align:center;">
+                <i class="fas fa-cogs" style="color:#00d4ff; font-size:1.5rem;"></i>
+                <div style="font-weight:600; margin-top:0.5rem;">IT Support & Maintenance</div>
+            </div>
+            <div style="background:rgba(138,43,226,0.8); border-radius:12px; padding:1rem; color:#fff; text-align:center;">
+                <i class="fas fa-microchip" style="color:#ff6b6b; font-size:1.5rem;"></i>
+                <div style="font-weight:600; margin-top:0.5rem;">Hardware Repair & Software Solutions</div>
+            </div>
+
+            <div style="background:rgba(218,165,32,0.8); border-radius:12px; padding:1rem; color:#fff; text-align:center;">
+                <i class="fas fa-network-wired" style="color:#059669; font-size:1.5rem;"></i>
+                <div style="font-weight:600; margin-top:0.5rem;">Networking & Internet Solutions</div>
+            </div>
+            <div style="background:rgba(255,215,0,0.8); border-radius:12px; padding:1rem; color:#333; text-align:center;">
+                <i class="fas fa-lightbulb" style="color:#22c55e; font-size:1.5rem;"></i>
+                <div style="font-weight:600; margin-top:0.5rem;">Business Solutions</div>
+            </div>
+            </div>
+        <br>
+        <div>
+                <a href="#contact" class="btn btn-secondary"><i class="fas fa-envelope"></i> Contact Us</a>
+
+        </div>
+
+                 <!-- Trust/Impact Row -->
+            <div style="margin-top:2.2rem; display:flex; flex-wrap:wrap; justify-content:center; gap:2.2rem;">
+                <div style="display:flex; align-items:center; gap:0.7rem;">
+                    <i class="fas fa-globe-africa" style="color:#00d4ff; font-size:1.5rem;"></i>
+                    <span style="color:#64748b; font-weight:600;">Serving Kenya &amp; East Africa</span>
+                </div>
+                <div style="display:flex; align-items:center; gap:0.7rem;">
+                    <i class="fas fa-award" style="color:#ff6b6b; font-size:1.5rem;"></i>
+                    <span style="color:#64748b; font-weight:600;">Trusted by 100+ Businesses</span>
+                </div>
+                
+                <div style="display:flex; align-items:center; gap:0.7rem;">
+                    <i class="fas fa-rocket" style="color:#7c3aed; font-size:1.5rem;"></i>
+                    <span style="color:#64748b; font-weight:600;">Silicon Savannah 2030 Vision</span>
+                </div>
             </div>
         </div>
-    </section>
+   
+        </div>
 
-    <!-- AI Features Section with Sliding Background Image Slideshow -->
-    <section class="ai-features-section" style="position:relative;">
-        <div class="content-container">
-            <h2 class="section-title">AI Features & Technologies</h2>
-            
-            <!-- BG Image Slideshow Start -->
-            <div id="ai-bg-slideshow"
-                 class="ai-bg-slideshow"
-                 style="width:100%;max-width:700px;margin:0 auto 2rem auto;position:relative;overflow:hidden;border-radius:1rem;box-shadow:0 2px 18px rgba(10,20,40,0.07);height:360px;min-height:240px;">
-                <!-- Slides as backgrounds, not <img> tags -->
-                <div class="slides-wrapper-bg"
-                     style="width:100%;height:100%;position:absolute;top:0;left:0;">
-                    <div class="slide-bg-img"
-                        style="width:100%;height:100%;position:absolute;top:0;left:0;opacity:1;transition:opacity .7s;z-index:1;background-size:cover;background-position:center;"
-                        data-slide="0"
-                        aria-label="AI Project BG 1"></div>
-                    <div class="slide-bg-img"
-                        style="width:100%;height:100%;position:absolute;top:0;left:0;opacity:0;transition:opacity .7s;z-index:1;background-size:cover;background-position:center;"
-                        data-slide="1"
-                        aria-label="AI Project BG 2"></div>
-                    <div class="slide-bg-img"
-                        style="width:100%;height:100%;position:absolute;top:0;left:0;opacity:0;transition:opacity .7s;z-index:1;background-size:cover;background-position:center;"
-                        data-slide="2"
-                        aria-label="AI Project BG 3"></div>
-                    <div class="slide-bg-img"
-                        style="width:100%;height:100%;position:absolute;top:0;left:0;opacity:0;transition:opacity .7s;z-index:1;background-size:cover;background-position:center;"
-                        data-slide="3"
-                        aria-label="AI Project BG 4"></div>
+
+    </section>
+    <!-- Carousel Section: About/Pages Switcher -->
+    <div class="carousel-container" id="carouselContainer">
+        <div class="carousel-slide active">
+            <h2 class="section-title">About D&V Technologies</h2>
+            <p style="font-size:1.1rem; color:#64748b; margin-bottom:1.2rem;">
+                D&V Technologies is a proudly Kenyan provider of AI, IoT, and digital solutions. We help businesses transform, automate, and innovate using the latest technologies, with a focus on local impact and global standards.
+            </p>
+            <div style="display:flex; justify-content:center; gap:2rem; flex-wrap:wrap;">
+                <div>
+                    <i class="fas fa-lightbulb" style="color:#00d4ff; font-size:2.2rem;"></i>
+                    <div style="font-weight:600;">Innovation</div>
                 </div>
-                <button class="slideshow-btn prev" type="button" style="position:absolute;top:50%;left:12px;transform:translateY(-50%);background:rgba(0,0,0,0.37);color:#fff;border:none;border-radius:50%;width:36px;height:36px;cursor:pointer;font-size:1.4rem;z-index:2;">&#8249;</button>
-                <button class="slideshow-btn next" type="button" style="position:absolute;top:50%;right:12px;transform:translateY(-50%);background:rgba(0,0,0,0.37);color:#fff;border:none;border-radius:50%;width:36px;height:36px;cursor:pointer;font-size:1.4rem;z-index:2;">&#8250;</button>
-                <div class="slideshow-dots" style="position:absolute;bottom:16px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:2;">
-                    <span class="slideshow-dot" style="height:12px;width:12px;display:inline-block;border-radius:50%;background:#fff;opacity:.6;cursor:pointer;"></span>
-                    <span class="slideshow-dot" style="height:12px;width:12px;display:inline-block;border-radius:50%;background:#fff;opacity:.6;cursor:pointer;"></span>
-                    <span class="slideshow-dot" style="height:12px;width:12px;display:inline-block;border-radius:50%;background:#fff;opacity:.6;cursor:pointer;"></span>
-                    <span class="slideshow-dot" style="height:12px;width:12px;display:inline-block;border-radius:50%;background:#fff;opacity:.6;cursor:pointer;"></span>
+                <div>
+                    <i class="fas fa-users" style="color:#ff6b6b; font-size:2.2rem;"></i>
+                    <div style="font-weight:600;">Teamwork</div>
+                </div>
+                <div>
+                    <i class="fas fa-award" style="color:#7c3aed; font-size:2.2rem;"></i>
+                    <div style="font-weight:600;">Excellence</div>
+                </div>
+                <div>
+                    <i class="fas fa-globe-africa" style="color:#059669; font-size:2.2rem;"></i>
+                    <div style="font-weight:600;">African Impact</div>
                 </div>
             </div>
-            <!-- BG Image Slideshow End -->
-
+        </div>
+        <div class="carousel-slide">
+            <h2 class="section-title">Our Mission</h2>
+            <p style="font-size:1.1rem; color:#64748b;">
+                To empower Kenyan businesses and communities through innovative technology, problem-solving, and a passion for excellence in AI, IoT, and digital transformation. We are committed to making Nairobi the Silicon Savannah of Africa by 2030.
+            </p>
+        </div>
+        <div class="carousel-slide">
+            <h2 class="section-title">Why Choose Us?</h2>
+            <ul style="color:#64748b; font-size:1.1rem; text-align:left; max-width:600px; margin:0 auto;">
+                <li><i class="fas fa-check-circle" style="color:#00d4ff;"></i> Kenyan AI & IoT Engineers</li>
+                <li><i class="fas fa-check-circle" style="color:#00d4ff;"></i> End-to-End Digital Solutions</li>
+                <li><i class="fas fa-check-circle" style="color:#00d4ff;"></i> Fast, Reliable Local Support</li>
+                <li><i class="fas fa-check-circle" style="color:#00d4ff;"></i> Custom Software & Hardware</li>
+                <li><i class="fas fa-check-circle" style="color:#00d4ff;"></i> Secure, Scalable Systems</li>
+                <li><i class="fas fa-check-circle" style="color:#00d4ff;"></i> Commitment to Silicon Savannah 2030</li>
+            </ul>
+        </div>
+        <div class="carousel-slide">
+            <h2 class="section-title">Our Technologies</h2>
+            <div style="display:flex; justify-content:center; gap:2.5rem; flex-wrap:wrap; margin-top:1.2rem;">
+                <div>
+                    <i class="fas fa-robot" style="color:#00d4ff; font-size:2.5rem;"></i>
+                    <div>AI/ML</div>
+                </div>
+                <div>
+                    <i class="fab fa-js-square" style="color:#f7df1e; font-size:2.5rem;"></i>
+                    <div>JavaScript</div>
+                </div>
+                <div>
+                    <i class="fab fa-java" style="color:#007396; font-size:2.5rem;"></i>
+                    <div>Java</div>
+                </div>
+                <div>
+                    <i class="fas fa-cloud" style="color:#059669; font-size:2.5rem;"></i>
+                    <div>Cloud</div>
+                </div>
+                <div>
+                    <i class="fas fa-wifi" style="color:#ff6b6b; font-size:2.5rem;"></i>
+                    <div>IoT</div>
+                </div>
+                <div>
+                    <i class="fas fa-globe-africa" style="color:#22c55e; font-size:2.5rem;"></i>
+                    <div>Kenyan Innovation</div>
+                </div>
+            </div>
+        </div>
+        <div class="carousel-controls">
+            <span class="carousel-dot active"></span>
+            <span class="carousel-dot"></span>
+            <span class="carousel-dot"></span>
+            <span class="carousel-dot"></span>
+        </div>
+    </div>
+    <!-- AI Features Section -->
+    <section class="ai-features-section">
+        <div class="content-container">
+            <h2 class="section-title">AI Features & Technologies</h2>
             <div class="ai-features-grid">
                 <div class="ai-feature-card">
                     <div class="ai-feature-icon"><i class="fas fa-brain"></i></div>
@@ -221,102 +1390,227 @@
                 </div>
             </div>
         </div>
-        <script>
-            // 1. Real file paths for slides -- update with correct relative public paths
-            // Use your actual images, for example:
-            // "public/img/pexels-cottonbro-8721318.jpg" etc in live dev, you use "img/pexels-cottonbro-8721318.jpg" from public
-            const slideBgImages = [
-                "img/pexels-cottonbro-8721318.jpg",
-                "img/pexels-fauxels-3183197.jpg",
-                "img/pexels-tara-winstead-8386440.jpg",
-                "img/pexels-thisisengineering-3861969.jpg"
-            ];
-            let slideBgCurrent = 0;
-            const totalSlidesBg = slideBgImages.length;
-            let aiBgInterval;
+    </section>
+    <!-- Live Features Section (scrollable, with background slideshow) -->
+    <section class="live-features" id="features" style="position:relative; overflow:hidden;">
+        <div class="live-features-bg-slideshow" style="position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;">
+            <div class="live-bg-slide live-bg1 active" style="background:linear-gradient(120deg,#00d4ff 0%,#0a1428 100%), url('https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=1200&q=80') center/cover no-repeat; position:absolute;top:0;left:0;width:100%;height:100%;opacity:0.7;transition:opacity 1.5s;"></div>
+            <div class="live-bg-slide live-bg2" style="background:linear-gradient(120deg,#0f172a 0%,#7c3aed 100%), url('https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1200&q=80') center/cover no-repeat; position:absolute;top:0;left:0;width:100%;height:100%;opacity:0;transition:opacity 1.5s;"></div>
+            <div class="live-bg-slide live-bg3" style="background:linear-gradient(120deg,#1e293b 0%,#059669 100%), url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80') center/cover no-repeat; position:absolute;top:0;left:0;width:100%;height:100%;opacity:0;transition:opacity 1.5s;"></div>
+            <div class="live-bg-slide live-bg4" style="background:linear-gradient(120deg,#0a1428 0%,#ff6b6b 100%), url('https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=1200&q=80') center/cover no-repeat; position:absolute;top:0;left:0;width:100%;height:100%;opacity:0;transition:opacity 1.5s;"></div>
+        </div>
+        <div class="features-container" style="position:relative; z-index:2;">
+            <div class="features-grid" style="gap:2.5rem;">
+                <!-- AI Analytics -->
+                <a href="#" class="feature-card feature-click" data-section="ai-services" style="background:rgba(255,255,255,0.97); box-shadow:0 10px 40px rgba(0,212,255,0.10); border-radius:22px; border:2px solid #e0f7fa; text-decoration:none; transition:transform 0.2s;">
+                    <div class="feature-icon" style="background:linear-gradient(135deg,#00d4ff 20%,#7c3aed 100%); color:#fff; border-radius:50%; width:64px; height:64px; display:flex; align-items:center; justify-content:center; font-size:2.2rem; margin:0 auto 1.2rem auto; box-shadow:0 4px 18px rgba(0,212,255,0.13);"><i class="fas fa-brain"></i></div>
+                    <h3 style="font-size:1.35rem; font-weight:700; color:#0a1428; margin-bottom:0.5rem;">AI Analytics</h3>
+                    <p style="color:#64748b; font-size:1.08rem;">Unlock actionable insights with real-time data processing, predictive analytics, and custom machine learning models for your business.</p>
+                </a>
+                <!-- IoT Connectivity -->
+                <a href="#" class="feature-card feature-click" data-section="iot-services" style="background:rgba(255,255,255,0.97); box-shadow:0 10px 40px rgba(255,107,107,0.10); border-radius:22px; border:2px solid #ffeaea; text-decoration:none; transition:transform 0.2s;">
+                    <div class="feature-icon" style="background:linear-gradient(135deg,#ff6b6b 20%,#00d4ff 100%); color:#fff; border-radius:50%; width:64px; height:64px; display:flex; align-items:center; justify-content:center; font-size:2.2rem; margin:0 auto 1.2rem auto; box-shadow:0 4px 18px rgba(255,107,107,0.13);"><i class="fas fa-satellite-dish"></i></div>
+                    <h3 style="font-size:1.35rem; font-weight:700; color:#0a1428; margin-bottom:0.5rem;">IoT & Internet Solutions</h3>
+                    <p style="color:#64748b; font-size:1.08rem;">Seamless WiFi, internet setup, smart device integration, and remote monitoring for Kenyan homes and businesses.</p>
+                </a>
+                <!-- Cyber Security -->
+                <a href="#" class="feature-card feature-click" data-section="software-dev" style="background:rgba(255,255,255,0.97); box-shadow:0 10px 40px rgba(124,58,237,0.10); border-radius:22px; border:2px solid #ede9fe; text-decoration:none; transition:transform 0.2s;">
+                    <div class="feature-icon" style="background:linear-gradient(135deg,#7c3aed 20%,#00d4ff 100%); color:#fff; border-radius:50%; width:64px; height:64px; display:flex; align-items:center; justify-content:center; font-size:2.2rem; margin:0 auto 1.2rem auto; box-shadow:0 4px 18px rgba(124,58,237,0.13);"><i class="fas fa-shield-alt"></i></div>
+                    <h3 style="font-size:1.35rem; font-weight:700; color:#0a1428; margin-bottom:0.5rem;">Cyber Security</h3>
+                    <p style="color:#64748b; font-size:1.08rem;">Protect your digital assets with advanced security, threat detection, and secure networking solutions.</p>
+                </a>
+                <!-- Edge Computing -->
+                <a href="#" class="feature-card feature-click" data-section="hardware-solutions" style="background:rgba(255,255,255,0.97); box-shadow:0 10px 40px rgba(5,150,105,0.10); border-radius:22px; border:2px solid #d1fae5; text-decoration:none; transition:transform 0.2s;">
+                    <div class="feature-icon" style="background:linear-gradient(135deg,#059669 20%,#00d4ff 100%); color:#fff; border-radius:50%; width:64px; height:64px; display:flex; align-items:center; justify-content:center; font-size:2.2rem; margin:0 auto 1.2rem auto; box-shadow:0 4px 18px rgba(5,150,105,0.13);"><i class="fas fa-atom"></i></div>
+                    <h3 style="font-size:1.35rem; font-weight:700; color:#0a1428; margin-bottom:0.5rem;">Edge Computing</h3>
+                    <p style="color:#64748b; font-size:1.08rem;">Ultra-fast, reliable performance by processing data closer to the source for real-time applications.</p>
+                </a>
+                <!-- Hardware Repair -->
+                <a href="#" class="feature-card feature-click" data-section="hardware-solutions" style="background:rgba(255,255,255,0.97); box-shadow:0 10px 40px rgba(0,212,255,0.10); border-radius:22px; border:2px solid #e0f7fa; text-decoration:none; transition:transform 0.2s;">
+                    <div class="feature-icon" style="background:linear-gradient(135deg,#00d4ff 20%,#ff6b6b 100%); color:#fff; border-radius:50%; width:64px; height:64px; display:flex; align-items:center; justify-content:center; font-size:2.2rem; margin:0 auto 1.2rem auto; box-shadow:0 4px 18px rgba(0,212,255,0.13);"><i class="fas fa-tools"></i></div>
+                    <h3 style="font-size:1.35rem; font-weight:700; color:#0a1428; margin-bottom:0.5rem;">Mobile & Laptop Repair</h3>
+                    <p style="color:#64748b; font-size:1.08rem;">Expert repair and maintenance for smartphones, laptops, and other hardware devices.</p>
+                </a>
+                <!-- Business Management -->
+                <a href="#" class="feature-card feature-click" data-section="software-dev" style="background:rgba(255,255,255,0.97); box-shadow:0 10px 40px rgba(255,107,107,0.10); border-radius:22px; border:2px solid #ffeaea; text-decoration:none; transition:transform 0.2s;">
+                    <div class="feature-icon" style="background:linear-gradient(135deg,#ff6b6b 20%,#7c3aed 100%); color:#fff; border-radius:50%; width:64px; height:64px; display:flex; align-items:center; justify-content:center; font-size:2.2rem; margin:0 auto 1.2rem auto; box-shadow:0 4px 18px rgba(255,107,107,0.13);"><i class="fas fa-briefcase"></i></div>
+                    <h3 style="font-size:1.35rem; font-weight:700; color:#0a1428; margin-bottom:0.5rem;">Business Management</h3>
+                    <p style="color:#64748b; font-size:1.08rem;">Custom software and digital tools to streamline operations, sales, and customer management for Kenyan enterprises.</p>
+                </a>
+            </div>
+        </div>
+        <style>
+            /* ...[Keep your .live-features-bg-slideshow CSS as is]... */
 
-            // Use getElementById and querySelector, avoid duplicate listeners, debug issue
-            function setBgSlides() {
-                const wrappers = document.querySelectorAll('#ai-bg-slideshow .slide-bg-img');
-                wrappers.forEach((el, idx) => {
-                    if (slideBgImages[idx]) {
-                        el.style.backgroundImage = `url('${slideBgImages[idx]}')`;
+            .live-features-bg-slideshow .live-bg-slide { opacity: 0; z-index: 0; }
+            .live-features-bg-slideshow .live-bg-slide.active { opacity: 0.7; z-index: 1; }
+            .feature-card.feature-click:hover {
+                transform: translateY(-8px) scale(1.03);
+                box-shadow: 0 20px 50px rgba(0,212,255,0.18), 0 2px 8px rgba(0,0,0,0.04);
+                border-color: #00d4ff;
+            }
+            .feature-card.feature-click {
+                cursor: pointer;
+                transition: box-shadow 0.2s, transform 0.2s, border-color 0.2s;
+            }
+            .feature-card .feature-icon {
+                transition: box-shadow 0.2s, transform 0.2s;
+            }
+            .feature-card.feature-click:hover .feature-icon {
+                box-shadow: 0 8px 32px rgba(0,212,255,0.18);
+                transform: scale(1.08) rotate(-6deg);
+            }
+            @media (max-width: 900px) {
+                .live-features-bg-slideshow .live-bg-slide { background-size: cover !important; }
+            }
+            @media (max-width: 600px) {
+                .features-grid { grid-template-columns: 1fr !important; }
+            }
+        </style>
+        <script>
+            //  background slideshow and feature card JS
+
+
+              // Live Features Background Slideshow
+            (function(){
+                const slides = document.querySelectorAll('.live-features-bg-slideshow .live-bg-slide');
+                let idx = 0;
+                setInterval(() => {
+                    slides[idx].classList.remove('active');
+                    idx = (idx + 1) % slides.length;
+                    slides[idx].classList.add('active');
+                }, 4000);
+            })();
+            // Make feature cards clickable (same as .btn[data-section])
+            document.querySelectorAll('.feature-card.feature-click[data-section]').forEach(card => {
+                card.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    let sectionId = this.getAttribute('data-section');
+                    if(sectionId) {
+                        document.querySelectorAll('.dropdown-content').forEach(sec => sec.classList.remove('active'));
+                        let target = document.getElementById(sectionId);
+                        if(target) {
+                            target.classList.add('active');
+                            window.scrollTo({top: target.offsetTop-70, behavior:'smooth'});
+                        }
                     }
                 });
-            }
-            function gotoSlideBG(idx) {
-                slideBgCurrent = idx;
-                updateBgSliding();
-            }
-            function slidePlusBG(delta) {
-                slideBgCurrent = (slideBgCurrent + delta + totalSlidesBg) % totalSlidesBg;
-                updateBgSliding();
-            }
-            function updateBgSliding() {
-                const slides = document.querySelectorAll('#ai-bg-slideshow .slide-bg-img');
-                const dots = document.querySelectorAll('#ai-bg-slideshow .slideshow-dot');
-                slides.forEach((slide, i) => {
-                    slide.style.opacity = (i === slideBgCurrent) ? "1" : "0";
-                });
-                dots.forEach((dot, i) => {
-                    dot.style.opacity = (i === slideBgCurrent) ? "1" : ".6";
-                });
-            }
-            function runBgSliding() {
-                if (aiBgInterval) clearInterval(aiBgInterval);
-                aiBgInterval = setInterval(() => {
-                    slideBgCurrent = (slideBgCurrent + 1) % totalSlidesBg;
-                    updateBgSliding();
-                }, 4100);
-            }
-            function stopBgSliding() {
-                if (aiBgInterval) clearInterval(aiBgInterval);
-            }
-
-            // Ensure all DOMContentLoaded routines run after elements exist
-            window.addEventListener("DOMContentLoaded", function () {
-                setBgSlides();
-                updateBgSliding();
-                runBgSliding();
-                // Attach correct handlers to prev/next buttons and dots
-                const slideshowEl = document.getElementById('ai-bg-slideshow');
-                if (slideshowEl) {
-                    const prevBtn = slideshowEl.querySelector('.slideshow-btn.prev');
-                    const nextBtn = slideshowEl.querySelector('.slideshow-btn.next');
-                    if (prevBtn) prevBtn.onclick = () => slidePlusBG(-1);
-                    if (nextBtn) nextBtn.onclick = () => slidePlusBG(1);
-                    const dots = slideshowEl.querySelectorAll('.slideshow-dot');
-                    dots.forEach((dot, idx) => {
-                        dot.onclick = () => gotoSlideBG(idx);
-                    });
-                    slideshowEl.addEventListener('mouseenter', stopBgSliding);
-                    slideshowEl.addEventListener('mouseleave', runBgSliding);
-                }
-                // Responsive fixes
-                window.addEventListener('resize', updateBgSliding);
             });
         </script>
     </section>
-
-    <!-- Live Features Section --><!-- keep as is, no change here -->
-    <section class="live-features" id="features" style="position:relative; overflow:hidden;">
-        <!-- ... -->
-    </section>
-    <!-- Dropdown Content: AI Services, IoT Services, Software Dev, Hardware Solutions (unchanged) -->
+    <!-- Dropdown Content: AI Services -->
     <section id="ai-services" class="dropdown-content">
-        <!-- ... -->
+        <div class="content-container">
+            <h2 class="section-title">AI Solutions</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon"><i class="fas fa-robot"></i></div>
+                    <h3>Machine Learning</h3>
+                    <p>Custom ML models for predictive analytics and automation for Kenyan businesses.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon"><i class="fas fa-brain"></i></div>
+                    <h3>Neural Networks</h3>
+                    <p>Deep learning for image, speech, and data recognition.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon"><i class="fas fa-eye"></i></div>
+                    <h3>Computer Vision</h3>
+                    <p>AI-powered image/video analysis for quality and security in Kenyan industries.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon"><i class="fab fa-js-square"></i></div>
+                    <h3>JavaScript AI</h3>
+                    <p>Interactive AI features in web apps using TensorFlow.js and more.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon"><i class="fab fa-java"></i></div>
+                    <h3>Java AI</h3>
+                    <p>Enterprise-grade AI solutions built with Java and open-source libraries.</p>
+                </div>
+            </div>
+        </div>
     </section>
+    <!-- Dropdown Content: IoT Services -->
     <section id="iot-services" class="dropdown-content">
-        <!-- ... -->
+        <div class="content-container">
+            <h2 class="section-title">IoT Integration</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon"><i class="fas fa-wifi"></i></div>
+                    <h3>Smart Devices</h3>
+                    <p>Connect and automate sensors, appliances, and more for Kenyan homes and offices.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon"><i class="fas fa-home"></i></div>
+                    <h3>Smart Home/Office</h3>
+                    <p>Lighting, climate, and security automation for comfort and safety in Nairobi.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon"><i class="fas fa-industry"></i></div>
+                    <h3>Industrial IoT</h3>
+                    <p>Monitor and optimize manufacturing and logistics in real time for Kenyan factories.</p>
+                </div>
+            </div>
+        </div>
     </section>
+    <!-- Dropdown Content: Software Development -->
     <section id="software-dev" class="dropdown-content">
-        <!-- ... -->
+        <div class="content-container">
+            <h2 class="section-title">Software Development</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon"><i class="fas fa-laptop-code"></i></div>
+                    <h3>Web Applications</h3>
+                    <p>Modern, responsive web apps for any Kenyan business need.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon"><i class="fas fa-mobile-alt"></i></div>
+                    <h3>Mobile Apps</h3>
+                    <p>iOS & Android apps for seamless mobile experiences in Kenya.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon"><i class="fas fa-database"></i></div>
+                    <h3>Enterprise Systems</h3>
+                    <p>Scalable solutions for complex business operations in Nairobi and beyond.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon"><i class="fab fa-js-square"></i></div>
+                    <h3>JavaScript Development</h3>
+                    <p>Dynamic, interactive web solutions using modern JS frameworks.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon"><i class="fab fa-java"></i></div>
+                    <h3>Java Development</h3>
+                    <p>Robust backend and enterprise software built with Java.</p>
+                </div>
+            </div>
+        </div>
     </section>
+    <!-- Dropdown Content: Hardware Solutions -->
     <section id="hardware-solutions" class="dropdown-content">
-        <!-- ... -->
+        <div class="content-container">
+            <h2 class="section-title">Hardware Solutions</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon"><i class="fas fa-server"></i></div>
+                    <h3>Server Infrastructure</h3>
+                    <p>Reliable, high-performance servers for your Kenyan business.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon"><i class="fas fa-network-wired"></i></div>
+                    <h3>Network Solutions</h3>
+                    <p>Secure, optimized networking for any scale in Kenya.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon"><i class="fas fa-microchip"></i></div>
+                    <h3>Embedded Systems</h3>
+                    <p>Custom hardware for IoT and specialized applications.</p>
+                </div>
+            </div>
+        </div>
     </section>
-
-    <!-- Contact Section -->
+    <!-- Contact Section (scrollable) -->
     <section id="contact" class="section">
         <h2 class="section-title">Get In Touch</h2>
         <div class="contact-grid">
@@ -331,11 +1625,8 @@
             </div>
             <div class="contact-card">
                 <div class="contact-icon"><i class="fas fa-phone"></i></div>
-                <h3>Phone & WhatsApp</h3>
-                <p>
-                    <a href="tel:0759075816" style="color:#00d4ff;text-decoration:underline;">0759 075 816</a><br>
-                    <a href="https://wa.me/254759075816" style="color:#25D366;text-decoration:underline;font-weight:600;"><i class="fab fa-whatsapp"></i> WhatsApp Business Chat</a>
-                </p>
+                <h3>Phone</h3>
+                <p><a href="tel:0759075816" style="color:#00d4ff;text-decoration:underline;">0759 075 816</a></p>
             </div>
             <div class="contact-card">
                 <div class="contact-icon"><i class="fas fa-envelope"></i></div>
@@ -344,26 +1635,11 @@
             </div>
             <div class="contact-card">
                 <div class="contact-icon"><i class="fas fa-globe"></i></div>
-                <h3>Website & Social</h3>
-                <p><a href="https://www.dvtechnologies.com" target="_blank" style="color:#00d4ff; text-decoration:underline;">www.dvtechnologies.com</a></p>
-                <div style="margin-top:0.6rem;">
-                    <a href="https://www.instagram.com/d.vtechnologies/" target="_blank" style="color: #e4405f; font-size:1.3rem; margin-right:1.2rem;">
-                        <i class="fab fa-instagram"></i>
-                    </a>
-                    <a href="https://l.instagram.com/?u=https%3A%2F%2Fwww.linkedin.com%2Fin%2Fd-and-v-tech-23484337a%3Futm_source%3Dig%26utm_medium%3Dsocial%26utm_content%3Dlink_in_bio%26fbclid%3DPAZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQMMjU2MjgxMDQwNTU4AAGnDWcp630oGUgOS2l_mmeaTBHDJebZwy8JIbBThj9lPV-zdU9CfeFD_T0QcX8_aem_YUtJKJ7uWSkCMNdNsRy2sg&e=AT1GQUXvOnbNHlyYWIzk92AToMBI77jzzVmhF5_DcmFOwST90hfGxvwPCXoVR-o736p3UYitOJIUPmOdJOE4XVYywrv8TvofpjvsE6yr7A"
-                       target="_blank" style="color: #0077b5; font-size:1.3rem;">
-                        <i class="fab fa-linkedin"></i>
-                    </a>
-                </div>
+                <h3>Website</h3>
+                <p><a href="https://www.dvtechnologies.com" target="_blank" style="color:#00d4ff;text-decoration:underline;">www.dvtechnologies.com</a></p>
             </div>
         </div>
-        <!-- Mpesa Details -->
-        <div style="margin:2rem auto 1.3rem auto; color:#fff; background:#222; padding:1rem 1.5rem; border-radius: 10px; font-size: 1rem; max-width:380px; text-align:center;">
-            <strong style="color:#00d4ff;"><i class="fas fa-mobile-alt"></i> Mpesa Payments:</strong><br>
-            Paybill/Phone: <span style="color:#00d4ff;">0759075816</span><br>
-            <small style="color: #cbd5e1;">Send payments via M-Pesa to the above number.</small>
-        </div>
-        <!-- Wallet Connect/Crypto Payments -->
+        <!-- Crypto Wallet Connection -->
         <div class="wallet-section" style="margin: 2rem 0; text-align: center; padding: 2rem; background: linear-gradient(135deg, #0f172a, #1e293b); border-radius: 18px; color: white;">
             <h3 style="color: #00d4ff; margin-bottom: 1rem; font-size: 1.5rem;">
                 <i class="fab fa-ethereum" style="margin-right: 0.5rem;"></i>
@@ -372,15 +1648,23 @@
             <p style="color: #cbd5e1; margin-bottom: 1.5rem; font-size: 1.1rem;">
                 Connect your wallet for secure crypto transactions
             </p>
-            <button id="connectWalletBtn" class="connect-wallet"
-            style="background: linear-gradient(45deg, #f6851b, #e2761b); border: none; padding: 1rem 2rem; border-radius: 12px; font-weight: 600; display: flex; align-items: center; gap: 0.5rem; transition: all 0.3s ease; cursor: pointer;">
-            <i class="fab fa-ethereum"></i> Connect Wallet
-            </button>
-            <div id="walletStatus" style="display: none; background: rgba(0, 212, 255, 0.09); padding: 1rem; border-radius: 12px; border: 1px solid #00d4ff; margin-top:1.2rem;">
-                <p style="margin: 0; font-size: 0.97rem; color: #00d4ff;">
-                    <i class="fas fa-check-circle" style="margin-right: 0.5rem;"></i>
-                    <span id="walletAddress">Wallet Connected</span>
-                </p>
+        </div>
+            <!--SCRIPT for wallet connection-->
+            <div  style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                      <button class="connect-wallet" 
+                      style="background: linear-gradient(45deg, #f6851b, #e2761b); border: none; padding: 1rem 2rem; border-radius: 12px; font-weight: 600; display: flex; align-items: center; gap: 0.5rem; transition: all 0.3s ease; cursor: pointer;">
+                    Connect wallet</button>
+
+  <script src="./main.js"></script>
+
+
+                </button>
+                <div id="walletStatus" style="display: none; background: rgba(0, 212, 255, 0.1); padding: 1rem; border-radius: 12px; border: 1px solid #00d4ff;">
+                    <p style="margin: 0; font-size: 0.9rem; color: #00d4ff;">
+                        <i class="fas fa-check-circle" style="margin-right: 0.5rem;"></i>
+                        <span id="walletAddress">Wallet Connected</span>
+                    </p>
+                </div>
             </div>
         </div>
 
@@ -392,269 +1676,331 @@
         </div>
     </section>
 
-    <!-- Footer (keep as is) -->
-    <footer class="footer">
-        <div class="footer-content" style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; gap: 2.5rem; max-width: 1100px;">
-            <!-- Brand & Mission -->
-            <div style="flex: 1 1 220px; min-width: 200px; text-align: left;">
-                <div class="logo" style="margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; font-size: 2rem;">
-                    <i class="fas fa-microchip"></i> D&V Technologies
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content" style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; gap: 2.5rem; max-width: 1100px;">
+                <!-- Brand & Mission -->
+                <div style="flex: 1 1 220px; min-width: 200px; text-align: left;">
+                    <div class="logo" style="margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; font-size: 2rem;">
+                        <i class="fas fa-microchip"></i> D&V Technologies
+                    </div>
+                    <p style="margin-bottom: 1rem; color: #cbd5e1; font-size: 1.05rem;">
+                        Transforming Kenyan Business Through Problem Solving & Innovation.<br>
+                        <span style="color:#00d4ff; font-weight:600;">Silicon Savannah 2030 Vision</span>
+                    </p>
+                    <div style="margin-bottom: 1rem;">
+                        <a href="mailto:info@dvtechnologies.com" style="color:#00d4ff; text-decoration:none; font-weight:600;">
+                            <i class="fas fa-envelope"></i> info@dvtechnologies.com
+                        </a>
+                    </div>
+                    <div style="margin-bottom: 1rem;">
+                        <a href="tel:0759075816" style="color:#00d4ff; text-decoration:none; font-weight:600;">
+                            <i class="fas fa-phone"></i> 0759 075 816
+                        </a>
+                    </div>
+                    <div style="margin-bottom: 1rem;">
+                        <a href="https://maps.google.com/?q=Lower+Kabete+Wagituni+Villa+Estate" target="_blank" style="color:#00d4ff; text-decoration:none;">
+                            <i class="fas fa-map-marker-alt"></i> Lower Kabete, Nairobi
+                        </a>
+                    </div>
                 </div>
-                <p style="margin-bottom: 1rem; color: #cbd5e1; font-size: 1.05rem;">
-                    Transforming Kenyan Business Through Problem Solving & Innovation.<br>
-                    <span style="color:#00d4ff; font-weight:600;">Silicon Savannah 2030 Vision</span>
+                <!-- Quick Links -->
+                <div style="flex: 1 1 180px; min-width: 170px;">
+                    <h4 style="color:#00d4ff; margin-bottom:0.7rem; font-size:1.1rem;">Quick Links</h4>
+                    <ul style="list-style:none; padding:0; margin:0;">
+                        <li><a href="#home" class="footer-link" style="color:#cbd5e1; text-decoration:none; display:flex; align-items:center; gap:0.5rem; margin-bottom:0.5rem;"><i class="fas fa-home"></i> Home</a></li>
+                        <li><a href="#" class="footer-link" data-section="ai-services" style="color:#cbd5e1; text-decoration:none; display:flex; align-items:center; gap:0.5rem; margin-bottom:0.5rem;"><i class="fas fa-robot"></i> AI Solutions</a></li>
+                        <li><a href="#" class="footer-link" data-section="iot-services" style="color:#cbd5e1; text-decoration:none; display:flex; align-items:center; gap:0.5rem; margin-bottom:0.5rem;"><i class="fas fa-wifi"></i> IoT Integration</a></li>
+                        <li><a href="#" class="footer-link" data-section="software-dev" style="color:#cbd5e1; text-decoration:none; display:flex; align-items:center; gap:0.5rem; margin-bottom:0.5rem;"><i class="fas fa-laptop-code"></i> Software Dev</a></li>
+                        <li><a href="#" class="footer-link" data-section="hardware-solutions" style="color:#cbd5e1; text-decoration:none; display:flex; align-items:center; gap:0.5rem; margin-bottom:0.5rem;"><i class="fas fa-server"></i> Hardware</a></li>
+                        <li><a href="#contact" class="footer-link" style="color:#cbd5e1; text-decoration:none; display:flex; align-items:center; gap:0.5rem;"><i class="fas fa-envelope"></i> Contact</a></li>
+                    </ul>
+                </div>
+                <!-- Social & Updates -->
+                <div style="flex: 1 1 220px; min-width: 200px;">
+                    <h4 style="color:#00d4ff; margin-bottom:0.7rem; font-size:1.1rem;">Connect With Us</h4>
+                    <div class="social-links" style="margin-bottom: 1.2rem; display: flex; gap: 0.7rem;">
+                        <a href="https://www.linkedin.com/company/dvtechnologies" class="social-link" target="_blank" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="https://twitter.com/dvtechnologies" class="social-link" target="_blank" title="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="https://facebook.com/dvtechnologies" class="social-link" target="_blank" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://instagram.com/dvtechnologies" class="social-link" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="https://github.com/dvtechnologies" class="social-link" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
+                    </div>
+                    <form id="footer-newsletter" style="display:flex; gap:0.5rem; margin-bottom:0.7rem;">
+                        <input type="email" placeholder="Your email" required style="padding:0.5rem 1rem; border-radius:22px; border:1px solid #00d4ff; outline:none; font-size:1rem; background:#0a1428; color:#fff;">
+                        <button type="submit" style="background:linear-gradient(45deg,#00d4ff,#0066ff); color:#fff; border:none; border-radius:22px; padding:0.5rem 1.2rem; font-weight:600; cursor:pointer; transition:background 0.2s;">Subscribe</button>
+                    </form>
+                    <div id="footer-newsletter-msg" style="font-size:0.95rem; color:#22c55e; min-height:1.2em;"></div>
+                </div>
+            </div>
+            <div style="margin-top:2.2rem; border-top:1px solid #1e293b; padding-top:1.2rem; text-align:center;">
+                <p style="font-size:0.95rem; color:#cbd5e1; margin-bottom:0.2rem;">&copy; 2025 D&V Technologies. All rights reserved.</p>
+                <p style="font-size:0.85rem; color:#64748b; margin-bottom:0.2rem;">Lower Kabete, Nairobi, Kenya</p>
+                <p style="font-size:0.9rem; color:#00d4ff; margin-top:0.7rem;">
+                    <i class="fas fa-rocket"></i> Proudly driving Nairobi's journey to become Africa's Silicon Savannah by 2030!
                 </p>
-                <div style="margin-bottom: 1rem;">
-                    <a href="mailto:info@dvtechnologies.com" style="color:#00d4ff; text-decoration:none; font-weight:600;">
-                        <i class="fas fa-envelope"></i> info@dvtechnologies.com
-                    </a>
-                </div>
-                <div style="margin-bottom: 1rem;">
-                    <a href="tel:0759075816" style="color:#00d4ff; text-decoration:none; font-weight:600;">
-                        <i class="fas fa-phone"></i> 0759 075 816
-                    </a>
-                </div>
-                <div style="margin-bottom: 1rem;">
-                    <a href="https://maps.google.com/?q=Lower+Kabete+Wagituni+Villa+Estate" target="_blank" style="color:#00d4ff; text-decoration:none;">
-                        <i class="fas fa-map-marker-alt"></i> Lower Kabete, Nairobi
-                    </a>
-                </div>
             </div>
-            <!-- Quick Links -->
-            <div style="flex: 1 1 180px; min-width: 170px;">
-                <h4 style="color:#00d4ff; margin-bottom:0.7rem; font-size:1.1rem;">Quick Links</h4>
-                <ul style="list-style:none; padding:0; margin:0;">
-                    <li><a href="#home" class="footer-link" style="color:#cbd5e1; text-decoration:none; display:flex; align-items:center; gap:0.5rem; margin-bottom:0.5rem;"><i class="fas fa-home"></i> Home</a></li>
-                    <li><a href="#" class="footer-link" data-section="ai-services" style="color:#cbd5e1; text-decoration:none; display:flex; align-items:center; gap:0.5rem; margin-bottom:0.5rem;"><i class="fas fa-robot"></i> AI Solutions</a></li>
-                    <li><a href="#" class="footer-link" data-section="iot-services" style="color:#cbd5e1; text-decoration:none; display:flex; align-items:center; gap:0.5rem; margin-bottom:0.5rem;"><i class="fas fa-wifi"></i> IoT Integration</a></li>
-                    <li><a href="#" class="footer-link" data-section="software-dev" style="color:#cbd5e1; text-decoration:none; display:flex; align-items:center; gap:0.5rem; margin-bottom:0.5rem;"><i class="fas fa-laptop-code"></i> Software Dev</a></li>
-                    <li><a href="#" class="footer-link" data-section="hardware-solutions" style="color:#cbd5e1; text-decoration:none; display:flex; align-items:center; gap:0.5rem; margin-bottom:0.5rem;"><i class="fas fa-server"></i> Hardware</a></li>
-                    <li><a href="#contact" class="footer-link" style="color:#cbd5e1; text-decoration:none; display:flex; align-items:center; gap:0.5rem;"><i class="fas fa-envelope"></i> Contact</a></li>
-                    <li><a href="#" class="footer-link" data-section="about-section" style="color:#cbd5e1; text-decoration:none; display:flex; align-items:center; gap:0.5rem;margin-bottom: 0.5rem;"><i class="fas fa-info-circle"></i> About</a></li>
-                </ul>
-            </div>
-            <!-- Social & Updates -->
-            <div style="flex: 1 1 220px; min-width: 200px;">
-                <h4 style="color:#00d4ff; margin-bottom:0.7rem; font-size:1.1rem;">Connect With Us</h4>
-                <div class="social-links" style="margin-bottom: 1.2rem; display: flex; gap: 0.7rem;">
-                    <a href="https://l.instagram.com/?u=https%3A%2F%2Fwww.linkedin.com%2Fin%2Fd-and-v-tech-23484337a%3Futm_source%3Dig%26utm_medium%3Dsocial%26utm_content%3Dlink_in_bio%26fbclid%3DPAZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQMMjU2MjgxMDQwNTU4AAGnDWcp630oGUgOS2l_mmeaTBHDJebZwy8JIbBThj9lPV-zdU9CfeFD_T0QcX8_aem_YUtJKJ7uWSkCMNdNsRy2sg&e=AT1GQUXvOnbNHlyYWIzk92AToMBI77jzzVmhF5_DcmFOwST90hfGxvwPCXoVR-o736p3UYitOJIUPmOdJOE4XVYywrv8TvofpjvsE6yr7A"
-                        class="social-link" target="_blank" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-                    <a href="https://www.instagram.com/d.vtechnologies/" class="social-link" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
-                    <a href="https://wa.me/254759075816" class="social-link" target="_blank" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
-                </div>
-                <form id="footer-newsletter" style="display:flex; gap:0.5rem; margin-bottom:0.7rem;">
-                    <input type="email" placeholder="Your email" required style="padding:0.5rem 1rem; border-radius:22px; border:1px solid #00d4ff; outline:none; font-size:1rem; background:#0a1428; color:#fff;">
-                    <button type="submit" style="background:linear-gradient(45deg,#00d4ff,#0066ff); color:#fff; border:none; border-radius:22px; padding:0.5rem 1.2rem; font-weight:600; cursor:pointer; transition:background 0.2s;">Subscribe</button>
-                </form>
-                <div id="footer-newsletter-msg" style="font-size:0.95rem; color:#22c55e; min-height:1.2em;"></div>
-            </div>
-        </div>
-        <div style="margin-top:2.2rem; border-top:1px solid #1e293b; padding-top:1.2rem; text-align:center;">
-            <p style="font-size:0.95rem; color:#cbd5e1; margin-bottom:0.2rem;">&copy; 2025 D&V Technologies. All rights reserved.</p>
-            <p style="font-size:0.85rem; color:#64748b; margin-bottom:0.2rem;">Lower Kabete, Nairobi, Kenya</p>
-            <p style="font-size:0.9rem; color:#00d4ff; margin-top:0.7rem;">
-                <i class="fas fa-rocket"></i> Proudly driving Nairobi's journey to become Africa's Silicon Savannah by 2030!
-            </p>
-        </div>
-        <style>
-            .footer-link:hover { color: #00d4ff !important; text-decoration: underline; }
-            .footer .social-link {
-                color: #00d4ff;
-                background: #0a1428;
-                border-radius: 50%;
-                width: 38px;
-                height: 38px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 1.25rem;
-                transition: background 0.2s, color 0.2s, transform 0.2s;
-                border: 1.5px solid #00d4ff;
-            }
-            .footer .social-link:hover {
-                background: #00d4ff;
-                color: #fff;
-                transform: scale(1.12) rotate(-8deg);
-            }
-            #footer-newsletter input:focus { border-color: #ff6b6b; }
-            #footer-newsletter button:hover { background:linear-gradient(45deg,#0066ff,#00d4ff);}
-            @media (max-width: 900px) {
-                .footer-content { flex-direction: column !important; align-items: flex-start !important; gap: 1.5rem !important; }
-            }
-            @media (max-width: 600px) {
-                .footer-content { flex-direction: column !important; gap: 1rem !important; }
-                .footer .logo { font-size: 1.3rem !important; }
-            }
-        </style>
-        <script>
-            // Footer newsletter form
-            document.getElementById('footer-newsletter').onsubmit = function(e) {
-                e.preventDefault();
-                var email = this.querySelector('input[type="email"]').value;
-                var msg = document.getElementById('footer-newsletter-msg');
-                // Simulate subscribe (replace with real API if needed)
-                msg.textContent = "Thank you for subscribing!";
-                this.reset();
-                setTimeout(()=>{ msg.textContent = ""; }, 4000);
-            };
-            // Footer quick links (same as nav)
-            document.querySelectorAll('.footer-link[data-section]').forEach(link => {
-                link.addEventListener('click', function(e) {
+            <style>
+                .footer-link:hover { color: #00d4ff !important; text-decoration: underline; }
+                .footer .social-link {
+                    color: #00d4ff;
+                    background: #0a1428;
+                    border-radius: 50%;
+                    width: 38px;
+                    height: 38px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 1.25rem;
+                    transition: background 0.2s, color 0.2s, transform 0.2s;
+                    border: 1.5px solid #00d4ff;
+                }
+                .footer .social-link:hover {
+                    background: #00d4ff;
+                    color: #fff;
+                    transform: scale(1.12) rotate(-8deg);
+                }
+                #footer-newsletter input:focus { border-color: #ff6b6b; }
+                #footer-newsletter button:hover { background:linear-gradient(45deg,#0066ff,#00d4ff);}
+                @media (max-width: 900px) {
+                    .footer-content { flex-direction: column !important; align-items: flex-start !important; gap: 1.5rem !important; }
+                }
+                @media (max-width: 600px) {
+                    .footer-content { flex-direction: column !important; gap: 1rem !important; }
+                    .footer .logo { font-size: 1.3rem !important; }
+                }
+            </style>
+            <script>
+                // Footer newsletter form
+                document.getElementById('footer-newsletter').onsubmit = function(e) {
                     e.preventDefault();
-                    let sectionId = this.getAttribute('data-section');
-                    if(sectionId) {
-                        document.querySelectorAll('.dropdown-content').forEach(sec => sec.classList.remove('active'));
-                        let target = document.getElementById(sectionId);
-                        if(target) {
-                            target.classList.add('active');
-                            window.scrollTo({top: target.offsetTop-70, behavior:'smooth'});
+                    var email = this.querySelector('input[type="email"]').value;
+                    var msg = document.getElementById('footer-newsletter-msg');
+                    // Simulate subscribe (replace with real API if needed)
+                    msg.textContent = "Thank you for subscribing!";
+                    this.reset();
+                    setTimeout(()=>{ msg.textContent = ""; }, 4000);
+                };
+                // Footer quick links (same as nav)
+                document.querySelectorAll('.footer-link[data-section]').forEach(link => {
+                    link.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        let sectionId = this.getAttribute('data-section');
+                        if(sectionId) {
+                            document.querySelectorAll('.dropdown-content').forEach(sec => sec.classList.remove('active'));
+                            let target = document.getElementById(sectionId);
+                            if(target) {
+                                target.classList.add('active');
+                                window.scrollTo({top: target.offsetTop-70, behavior:'smooth'});
+                            }
                         }
-                    }
+                    });
+                });
+            </script>
+        </footer>
+
+
+        <!-- Scripts -->
+        <script>
+            // Mobile menu toggle functionality
+            document.getElementById('mobileMenuToggle').addEventListener('click', function() {
+                const navMenu = document.querySelector('.nav-menu');
+                navMenu.classList.toggle('active');
+                
+                // Change icon between bars and X
+                const icon = this.querySelector('i');
+                if (navMenu.classList.contains('active')) {
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-times');
+                } else {
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+            });
+
+            // Close mobile menu when clicking on a nav link
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', function() {
+                    const navMenu = document.querySelector('.nav-menu');
+                    const mobileToggle = document.getElementById('mobileMenuToggle');
+                    const icon = mobileToggle.querySelector('i');
+                    
+                    navMenu.classList.remove('active');
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
                 });
             });
-        </script>
-    </footer>
 
-    <!-- Scripts -->
-    <script>
-        // Mobile menu
-        document.getElementById('mobileMenuToggle').addEventListener('click', function() {
-            const navMenu = document.querySelector('.nav-menu');
-            navMenu.classList.toggle('active');
-            const icon = this.querySelector('i');
-            if (navMenu.classList.contains('active')) {
-                icon.classList.remove('fa-bars');
-                icon.classList.add('fa-times');
-            } else {
-                icon.classList.remove('fa-times');
-                icon.classList.add('fa-bars');
+            // MetaMask Wallet Connection Functionality
+            let userWalletAddress = null;
+            
+            // Check if MetaMask is installed
+            function isMetaMaskInstalled() {
+                return typeof window.ethereum !== 'undefined';
             }
-        });
-        // Close mobile menu when clicking nav link
-        document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', function() {
-                const navMenu = document.querySelector('.nav-menu');
-                const mobileToggle = document.getElementById('mobileMenuToggle');
-                const icon = mobileToggle.querySelector('i');
-                navMenu.classList.remove('active');
-                icon.classList.remove('fa-times');
-                icon.classList.add('fa-bars');
-            });
-        });
-        // MetaMask Wallet Connection
-        let userWalletAddress = null;
-        function isMetaMaskInstalled() { return typeof window.ethereum !== 'undefined'; }
-        async function connectWallet() {
-            if (!isMetaMaskInstalled()) {
-                alert('MetaMask is not installed. Please install MetaMask to continue.');
-                window.open('https://metamask.io/download/', '_blank');
-                return;
-            }
-            try {
-                const accounts = await window.ethereum.request({method:'eth_requestAccounts'});
-                if (accounts.length > 0) {
-                    userWalletAddress = accounts[0];
-                    updateWalletUI(userWalletAddress);
-                    window.ethereum.on('accountsChanged', handleAccountsChanged);
-                    window.ethereum.on('chainChanged', handleChainChanged);
+            
+            // Connect to MetaMask wallet
+            async function connectWallet() {
+                if (!isMetaMaskInstalled()) {
+                    alert('MetaMask is not installed. Please install MetaMask to continue.');
+                    window.open('https://metamask.io/download/', '_blank');
+                    return;
                 }
-            } catch (error) {
-                alert('Failed to connect wallet. Please try again.');
-            }
-        }
-        function handleAccountsChanged(accounts) {
-            if (accounts.length === 0) {
-                userWalletAddress = null; resetWalletUI();
-            } else {
-                userWalletAddress = accounts[0]; updateWalletUI(userWalletAddress);
-            }
-        }
-        function handleChainChanged(chainId) { window.location.reload(); }
-        function updateWalletUI(address) {
-            const connectBtn = document.getElementById('connectWalletBtn');
-            const walletStatus = document.getElementById('walletStatus');
-            const walletAddress = document.getElementById('walletAddress');
-            if (connectBtn && walletStatus && walletAddress) {
-                connectBtn.style.display = 'none';
-                walletStatus.style.display = 'block';
-                walletAddress.textContent = `${address.slice(0, 6)}...${address.slice(-4)}`;
-            }
-        }
-        function resetWalletUI() {
-            const connectBtn = document.getElementById('connectWalletBtn');
-            const walletStatus = document.getElementById('walletStatus');
-            if (connectBtn && walletStatus) {
-                connectBtn.style.display = 'flex';
-                walletStatus.style.display = 'none';
-            }
-        }
-        async function checkWalletConnection() {
-            if (isMetaMaskInstalled()) {
+                
                 try {
-                    const accounts = await window.ethereum.request({method:'eth_accounts'});
+                    // Request account access
+                    const accounts = await window.ethereum.request({
+                        method: 'eth_requestAccounts'
+                    });
+                    
                     if (accounts.length > 0) {
                         userWalletAddress = accounts[0];
                         updateWalletUI(userWalletAddress);
+                        
+                        // Listen for account changes
                         window.ethereum.on('accountsChanged', handleAccountsChanged);
                         window.ethereum.on('chainChanged', handleChainChanged);
+                        
+                        console.log('Wallet connected:', userWalletAddress);
                     }
-                } catch (error) {}
+                } catch (error) {
+                    console.error('Error connecting wallet:', error);
+                    alert('Failed to connect wallet. Please try again.');
+                }
             }
-        }
-        document.addEventListener('DOMContentLoaded', function() {
-            const connectBtn = document.getElementById('connectWalletBtn');
-            if (connectBtn) connectBtn.addEventListener('click', connectWallet);
-            checkWalletConnection();
-        });
-
-        // Navbar active link highlight
-        document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', function() {
-                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-                this.classList.add('active');
-                document.querySelector('.nav-menu').classList.remove('active');
+            
+            // Handle account changes
+            function handleAccountsChanged(accounts) {
+                if (accounts.length === 0) {
+                    // User disconnected their wallet
+                    userWalletAddress = null;
+                    resetWalletUI();
+                } else {
+                    // User switched accounts
+                    userWalletAddress = accounts[0];
+                    updateWalletUI(userWalletAddress);
+                }
+            }
+            
+            // Handle chain changes
+            function handleChainChanged(chainId) {
+                // Reload the page when chain changes
+                window.location.reload();
+            }
+            
+            // Update UI when wallet is connected
+            function updateWalletUI(address) {
+                const connectBtn = document.getElementById('connectWalletBtn');
+                const walletStatus = document.getElementById('walletStatus');
+                const walletAddress = document.getElementById('walletAddress');
+                
+                if (connectBtn && walletStatus && walletAddress) {
+                    connectBtn.style.display = 'none';
+                    walletStatus.style.display = 'block';
+                    walletAddress.textContent = `${address.slice(0, 6)}...${address.slice(-4)}`;
+                }
+            }
+            
+            // Reset UI when wallet is disconnected
+            function resetWalletUI() {
+                const connectBtn = document.getElementById('connectWalletBtn');
+                const walletStatus = document.getElementById('walletStatus');
+                
+                if (connectBtn && walletStatus) {
+                    connectBtn.style.display = 'flex';
+                    walletStatus.style.display = 'none';
+                }
+            }
+            
+            // Check if wallet is already connected on page load
+            async function checkWalletConnection() {
+                if (isMetaMaskInstalled()) {
+                    try {
+                        const accounts = await window.ethereum.request({
+                            method: 'eth_accounts'
+                        });
+                        
+                        if (accounts.length > 0) {
+                            userWalletAddress = accounts[0];
+                            updateWalletUI(userWalletAddress);
+                            
+                            // Listen for account changes
+                            window.ethereum.on('accountsChanged', handleAccountsChanged);
+                            window.ethereum.on('chainChanged', handleChainChanged);
+                        }
+                    } catch (error) {
+                        console.error('Error checking wallet connection:', error);
+                    }
+                }
+            }
+            
+            // Initialize wallet connection functionality
+            document.addEventListener('DOMContentLoaded', function() {
+                const connectBtn = document.getElementById('connectWalletBtn');
+                if (connectBtn) {
+                    connectBtn.addEventListener('click', connectWallet);
+                }
+                
+                // Check for existing wallet connection
+                checkWalletConnection();
             });
-        });
-        // Dropdown content transitions
-        function showDropdownContent(sectionId) {
-            document.querySelectorAll('.dropdown-content').forEach(sec => sec.classList.remove('active'));
-            let target = document.getElementById(sectionId);
-            if(target) {
-                target.classList.add('active');
-                window.scrollTo({top: target.offsetTop-70, behavior:'smooth'});
-            }
-        }
-        // Enable About dropdown
-        document.querySelectorAll('.dropdown-link, .btn[data-section]').forEach(item => {
-            item.addEventListener('click', function(e) {
-                e.preventDefault();
-                let sectionId = this.getAttribute('data-section');
-                if(sectionId) showDropdownContent(sectionId);
+            
+            // Additional JavaScript functionality
+            // Navbar active link highlight
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', function() {
+                    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                    this.classList.add('active');
+                    document.querySelector('.nav-menu').classList.remove('active');
+                });
             });
-        });
-        // Hide dropdown-content when clicking outside
-        document.addEventListener('click', function(e) {
-            if(!e.target.closest('.dropdown-content') && !e.target.closest('.dropdown-link') && !e.target.closest('.btn[data-section]')) {
-                document.querySelectorAll('.dropdown-content').forEach(sec => sec.classList.remove('active'));
-            }
-        });
-        // Carousel logic
-        (function(){
-            const slides = document.querySelectorAll('.carousel-slide');
-            const dots = document.querySelectorAll('.carousel-dot');
-            let idx = 0;
-            function showSlide(i) {
-                slides.forEach((s, j) => s.classList.toggle('active', j === i));
-                dots.forEach((d, j) => d.classList.toggle('active', j === i));
-                idx = i;
-            }
-            dots.forEach((dot, i) => {
-                dot.onclick = () => showSlide(i);
-            });
+            // Hero slideshow
+            let slides = document.querySelectorAll('.slide');
+            let currentSlide = 0;
             setInterval(() => {
-                showSlide((idx+1)%slides.length);
-            }, 6000);
-        })();
-    </script>
-</body>
-</html>
+                slides[currentSlide].classList.remove('active');
+                currentSlide = (currentSlide+1)%slides.length;
+                slides[currentSlide].classList.add('active');
+            }, 3500);
+            // Dropdown content transitions
+            function showDropdownContent(sectionId) {
+                document.querySelectorAll('.dropdown-content').forEach(sec => sec.classList.remove('active'));
+                let target = document.getElementById(sectionId);
+                if(target) {
+                    target.classList.add('active');
+                    window.scrollTo({top: target.offsetTop-70, behavior:'smooth'});
+                }
+            }
+            document.querySelectorAll('.dropdown-link, .btn[data-section]').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    let sectionId = this.getAttribute('data-section');
+                    if(sectionId) showDropdownContent(sectionId);
+                });
+            });
+            // Hide dropdown-content when clicking outside
+            document.addEventListener('click', function(e) {
+                if(!e.target.closest('.dropdown-content') && !e.target.closest('.dropdown-link') && !e.target.closest('.btn[data-section]')) {
+                    document.querySelectorAll('.dropdown-content').forEach(sec => sec.classList.remove('active'));
+                }
+            });
+            // Carousel logic
+            (function(){
+                const slides = document.querySelectorAll('.carousel-slide');
+                const dots = document.querySelectorAll('.carousel-dot');
+                let idx = 0;
+                function showSlide(i) {
+                    slides.forEach((s, j) => s.classList.toggle('active', j === i));
+                    dots.forEach((d, j) => d.classList.toggle('active', j === i));
+                    idx = i;
+                }
+                dots.forEach((dot, i) => {
+                    dot.onclick = () => showSlide(i);
+                });
+                setInterval(() => {
+                    showSlide((idx+1)%slides.length);
+                }, 6000);
+            })();
+        </script>
+    </body>
+    </html>
